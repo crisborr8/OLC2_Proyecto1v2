@@ -27,7 +27,7 @@ def submitReporteErrores():
 def submitReporteAST():
     if request.method == 'POST':
         global texto
-        os.system('dot -Tpdf test.dot > templates/AST.pdf')
+        os.system('dot -Tpdf ply/report/input.dot > templates/AST.pdf')
         return send_from_directory("templates", 'AST.pdf')
 
 if __name__ == '__main__':
