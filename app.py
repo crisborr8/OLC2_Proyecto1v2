@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request
 from ply.main import init
+import graphviz
 
 app = Flask(__name__)
 
