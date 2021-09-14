@@ -1,6 +1,6 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 from ply.main import init
-import graphviz
+import os
 
 app = Flask(__name__)
 
@@ -22,6 +22,13 @@ def submitReporteErrores():
     if request.method == 'POST':
         global texto
         return render_template('reporte_errores.html')
+
+@app.route('/submitReporteAST', methods=['POST'])
+def submitReporteAST():
+    if request.method == 'POST':
+        global texto
+        os.system('dot -Tpdf test.dot > templates/AST.pdf')
+        return send_from_directory("templates", 'AST.pdf')
 
 if __name__ == '__main__':
     app.debug = True 
