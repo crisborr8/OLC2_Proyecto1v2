@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request
 from ply.main import init
-import os
-os.environ["PATH"] += os.pathsep + '/app/.heroku-buildpack-graphviz/usr/bin'
-import graphviz
+import pygraphviz as p
 
 app = Flask(__name__)
 
