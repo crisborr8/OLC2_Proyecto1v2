@@ -30,6 +30,12 @@ def submitReporteAST():
         os.system('dot -Tpdf ply/report/input.dot > templates/AST.pdf')
         return send_from_directory("templates", 'AST.pdf')
 
+@app.route('/submitReporteTabla', methods=['POST'])
+def submitReporteTabla():
+    if request.method == 'POST':
+        global texto
+        return render_template('reporte_simbolos.html')
+
 if __name__ == '__main__':
     app.debug = True 
     app.run()

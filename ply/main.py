@@ -10,6 +10,9 @@ import ply.report.reportes as rep
 def init(texto):
     rep.initVariables()
     rep.txt = texto
-    parser.parse(texto)
-    rep.setReportes()
+    parser.parse(texto, tracking=True)
+
+    rep.setReporte_Error()
+    rep.setReporte_Simbolos()
+    
     return rep.resultado

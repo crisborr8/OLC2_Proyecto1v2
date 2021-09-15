@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftSIMBOLO_SUMASIMBOLO_RESTAleftSIMBOLO_MULTIPLICACIONSIMBOLO_DIVICIONrightNEGATIVODATO_TIPO_FLOAT64 DATO_TIPO_INT64 DATO_TIPO_STRING DER_PARENTESIS ID IZQ_PARENTESIS PUNTO_COMA SIMBOLO_DIVICION SIMBOLO_IGUAL SIMBOLO_MULTIPLICACION SIMBOLO_RESTA SIMBOLO_SUMA TABULADORinit   : instruccionesinit   : instrucciones    : instruccioninstrucciones    : instruccion instruccionesinstruccion  : expresion PUNTO_COMAexpresion    : expresion SIMBOLO_SUMA expresion\n                    | expresion SIMBOLO_RESTA expresion\n                    | expresion SIMBOLO_DIVICION expresion\n                    | expresion SIMBOLO_MULTIPLICACION expresionexpresion  : IZQ_PARENTESIS expresion DER_PARENTESISexpresion  : SIMBOLO_RESTA expresion %prec NEGATIVOexpresion    : DATO_TIPO_FLOAT64\n                    | DATO_TIPO_INT64\n                    | DATO_TIPO_STRING'
+_lr_signature = 'leftSIMBOLO_SUMASIMBOLO_RESTAleftSIMBOLO_MULTIPLICACIONSIMBOLO_DIVICIONrightNEGATIVODATO_TIPO_FLOAT64 DATO_TIPO_INT64 DATO_TIPO_STRING DER_PARENTESIS ID IZQ_PARENTESIS PRINT PRINTLN PUNTO_COMA SIMBOLO_DIVICION SIMBOLO_IGUAL SIMBOLO_MULTIPLICACION SIMBOLO_RESTA SIMBOLO_SUMA TABULADORinit   : instruccionesinit   : instrucciones    : instruccioninstrucciones    : instruccion instruccionesinstruccion  : PRINTLN IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMAinstruccion  : PRINT IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMAinstruccion  : ID SIMBOLO_IGUAL expresion PUNTO_COMAinstruccion  : expresionexpresion    : expresion SIMBOLO_SUMA expresion\n                    | expresion SIMBOLO_RESTA expresion\n                    | expresion SIMBOLO_DIVICION expresion\n                    | expresion SIMBOLO_MULTIPLICACION expresionexpresion  : IZQ_PARENTESIS expresion DER_PARENTESISexpresion  : SIMBOLO_RESTA expresion %prec NEGATIVOexpresion    : DATO_TIPO_FLOAT64\n                    | DATO_TIPO_INT64\n                    | DATO_TIPO_STRINGexpresion    : ID'
     
-_lr_action_items = {'$end':([0,1,2,3,10,11,],[-2,0,-1,-3,-4,-5,]),'IZQ_PARENTESIS':([0,3,5,6,11,12,13,14,15,],[6,6,6,6,-5,6,6,6,6,]),'SIMBOLO_RESTA':([0,3,4,5,6,7,8,9,11,12,13,14,15,16,17,18,19,20,21,22,],[5,5,13,5,5,-12,-13,-14,-5,5,5,5,5,-11,13,-6,-7,-8,-9,-10,]),'DATO_TIPO_FLOAT64':([0,3,5,6,11,12,13,14,15,],[7,7,7,7,-5,7,7,7,7,]),'DATO_TIPO_INT64':([0,3,5,6,11,12,13,14,15,],[8,8,8,8,-5,8,8,8,8,]),'DATO_TIPO_STRING':([0,3,5,6,11,12,13,14,15,],[9,9,9,9,-5,9,9,9,9,]),'PUNTO_COMA':([4,7,8,9,16,18,19,20,21,22,],[11,-12,-13,-14,-11,-6,-7,-8,-9,-10,]),'SIMBOLO_SUMA':([4,7,8,9,16,17,18,19,20,21,22,],[12,-12,-13,-14,-11,12,-6,-7,-8,-9,-10,]),'SIMBOLO_DIVICION':([4,7,8,9,16,17,18,19,20,21,22,],[14,-12,-13,-14,-11,14,14,14,-8,-9,-10,]),'SIMBOLO_MULTIPLICACION':([4,7,8,9,16,17,18,19,20,21,22,],[15,-12,-13,-14,-11,15,15,15,-8,-9,-10,]),'DER_PARENTESIS':([7,8,9,16,17,18,19,20,21,22,],[-12,-13,-14,-11,22,-6,-7,-8,-9,-10,]),}
+_lr_action_items = {'$end':([0,1,2,3,6,8,10,11,12,13,16,23,25,26,27,28,29,34,35,36,],[-2,0,-1,-3,-8,-18,-15,-16,-17,-4,-18,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'PRINTLN':([0,3,6,8,10,11,12,16,23,25,26,27,28,29,34,35,36,],[4,4,-8,-18,-15,-16,-17,-18,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'PRINT':([0,3,6,8,10,11,12,16,23,25,26,27,28,29,34,35,36,],[7,7,-8,-18,-15,-16,-17,-18,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'ID':([0,3,5,6,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[8,8,16,-8,-18,16,-15,-16,-17,16,-18,16,16,16,16,16,16,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'IZQ_PARENTESIS':([0,3,4,5,6,7,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[5,5,14,5,-8,21,-18,5,-15,-16,-17,5,-18,5,5,5,5,5,5,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'SIMBOLO_RESTA':([0,3,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,34,35,36,],[9,9,9,18,-18,9,-15,-16,-17,9,18,-18,9,9,9,9,9,9,-14,18,-13,-9,-10,-11,-12,18,18,-7,-5,-6,]),'DATO_TIPO_FLOAT64':([0,3,5,6,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[10,10,10,-8,-18,10,-15,-16,-17,10,-18,10,10,10,10,10,10,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'DATO_TIPO_INT64':([0,3,5,6,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[11,11,11,-8,-18,11,-15,-16,-17,11,-18,11,11,11,11,11,11,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'DATO_TIPO_STRING':([0,3,5,6,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[12,12,12,-8,-18,12,-15,-16,-17,12,-18,12,12,12,12,12,12,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'SIMBOLO_SUMA':([6,8,10,11,12,15,16,23,24,25,26,27,28,29,30,31,],[17,-18,-15,-16,-17,17,-18,-14,17,-13,-9,-10,-11,-12,17,17,]),'SIMBOLO_DIVICION':([6,8,10,11,12,15,16,23,24,25,26,27,28,29,30,31,],[19,-18,-15,-16,-17,19,-18,-14,19,-13,19,19,-11,-12,19,19,]),'SIMBOLO_MULTIPLICACION':([6,8,10,11,12,15,16,23,24,25,26,27,28,29,30,31,],[20,-18,-15,-16,-17,20,-18,-14,20,-13,20,20,-11,-12,20,20,]),'SIMBOLO_IGUAL':([8,],[22,]),'DER_PARENTESIS':([10,11,12,15,16,23,24,25,26,27,28,29,30,],[-15,-16,-17,25,-18,-14,32,-13,-9,-10,-11,-12,33,]),'PUNTO_COMA':([10,11,12,16,23,25,26,27,28,29,31,32,33,],[-15,-16,-17,-18,-14,-13,-9,-10,-11,-12,34,35,36,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,3,],[2,10,]),'instruccion':([0,3,],[3,3,]),'expresion':([0,3,5,6,12,13,14,15,],[4,4,16,17,18,19,20,21,]),}
+_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,3,],[2,13,]),'instruccion':([0,3,],[3,3,]),'expresion':([0,3,5,9,14,17,18,19,20,21,22,],[6,6,15,23,24,26,27,28,29,30,31,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,18 +27,22 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> init","S'",1,None,None,None),
-  ('init -> instrucciones','init',1,'p_init','parser.py',16),
-  ('init -> <empty>','init',0,'p_vacio','parser.py',24),
-  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones_l1','parser.py',30),
-  ('instrucciones -> instruccion instrucciones','instrucciones',2,'p_instrucciones_l2','parser.py',36),
-  ('instruccion -> expresion PUNTO_COMA','instruccion',2,'p_instruccion','parser.py',42),
-  ('expresion -> expresion SIMBOLO_SUMA expresion','expresion',3,'p_expresion_binario','parser.py',49),
-  ('expresion -> expresion SIMBOLO_RESTA expresion','expresion',3,'p_expresion_binario','parser.py',50),
-  ('expresion -> expresion SIMBOLO_DIVICION expresion','expresion',3,'p_expresion_binario','parser.py',51),
-  ('expresion -> expresion SIMBOLO_MULTIPLICACION expresion','expresion',3,'p_expresion_binario','parser.py',52),
-  ('expresion -> IZQ_PARENTESIS expresion DER_PARENTESIS','expresion',3,'p_expresion_par','parser.py',64),
-  ('expresion -> SIMBOLO_RESTA expresion','expresion',2,'p_expresion_negativo','parser.py',72),
-  ('expresion -> DATO_TIPO_FLOAT64','expresion',1,'p_expresion_datos','parser.py',79),
-  ('expresion -> DATO_TIPO_INT64','expresion',1,'p_expresion_datos','parser.py',80),
-  ('expresion -> DATO_TIPO_STRING','expresion',1,'p_expresion_datos','parser.py',81),
+  ('init -> instrucciones','init',1,'p_init','parser.py',17),
+  ('init -> <empty>','init',0,'p_vacio','parser.py',25),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones_l1','parser.py',31),
+  ('instrucciones -> instruccion instrucciones','instrucciones',2,'p_instrucciones_l2','parser.py',37),
+  ('instruccion -> PRINTLN IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMA','instruccion',5,'p_instruccion_println','parser.py',46),
+  ('instruccion -> PRINT IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMA','instruccion',5,'p_instruccion_print','parser.py',62),
+  ('instruccion -> ID SIMBOLO_IGUAL expresion PUNTO_COMA','instruccion',4,'p_instruccion_asignacion','parser.py',79),
+  ('instruccion -> expresion','instruccion',1,'p_instruccion_expresion','parser.py',94),
+  ('expresion -> expresion SIMBOLO_SUMA expresion','expresion',3,'p_expresion_binario','parser.py',105),
+  ('expresion -> expresion SIMBOLO_RESTA expresion','expresion',3,'p_expresion_binario','parser.py',106),
+  ('expresion -> expresion SIMBOLO_DIVICION expresion','expresion',3,'p_expresion_binario','parser.py',107),
+  ('expresion -> expresion SIMBOLO_MULTIPLICACION expresion','expresion',3,'p_expresion_binario','parser.py',108),
+  ('expresion -> IZQ_PARENTESIS expresion DER_PARENTESIS','expresion',3,'p_expresion_par','parser.py',120),
+  ('expresion -> SIMBOLO_RESTA expresion','expresion',2,'p_expresion_negativo','parser.py',128),
+  ('expresion -> DATO_TIPO_FLOAT64','expresion',1,'p_expresion_datos','parser.py',135),
+  ('expresion -> DATO_TIPO_INT64','expresion',1,'p_expresion_datos','parser.py',136),
+  ('expresion -> DATO_TIPO_STRING','expresion',1,'p_expresion_datos','parser.py',137),
+  ('expresion -> ID','expresion',1,'p_expresion_id','parser.py',145),
 ]

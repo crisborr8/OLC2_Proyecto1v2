@@ -30,10 +30,9 @@ def setNodo(nodo, hijos):
     txt_hoja += id_nodo + " [label=" + nodo + "];\n"
     return id_nodo
 
-def viewGraph():
+def saveGraph():
     file_name = "ply/report/input.dot"
     f = open(file_name, 'w+')
     graph = "digraph {\nnode [shape=plaintext]\n" + txt_hoja + "\n" + txt_nodo + "}"
     f.write(graph)
     f.close()
-    print("guardado...")
