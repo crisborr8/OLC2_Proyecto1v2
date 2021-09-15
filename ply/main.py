@@ -14,5 +14,5 @@ def init(texto):
 
     rep.setReporte_Error()
     rep.setReporte_Simbolos()
-    
+
     return rep.resultado

@@ -1,15 +1,24 @@
 import ply.report.reportes as rep
 
-tokens = (
-    'TABULADOR',
-    'PRINT', 'PRINTLN',
+reserved = {
+    'println'   : 'PRINTLN',
+    'print'     : 'PRINT',
+    'if'        : 'IF',
+    'else'      : 'ELSE',
+    'end'       : 'END'
+}
+tokens = [
+    'TABULADOR', 'SALTO',
     'ID',
     'DATO_TIPO_FLOAT64', 'DATO_TIPO_INT64', 'DATO_TIPO_STRING',
     'SIMBOLO_SUMA', 'SIMBOLO_RESTA', 'SIMBOLO_DIVICION', 'SIMBOLO_MULTIPLICACION', 'SIMBOLO_IGUAL',
-    'PUNTO_COMA', 'IZQ_PARENTESIS', 'DER_PARENTESIS'
-)
+    'PUNTO_COMA', 'IZQ_PARENTESIS', 'DER_PARENTESIS', 
+    'OR', 'NOT', 'AND',
+    'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'IGUAL'
+] + list(reserved.values())
 
 t_TABULADOR                 = r'\t'
+t_SALTO                     = r'\n'
 
 t_SIMBOLO_SUMA              = r'\+'
 t_SIMBOLO_RESTA             = r'-'
@@ -17,21 +26,23 @@ t_SIMBOLO_DIVICION          = r'/'
 t_SIMBOLO_MULTIPLICACION    = r'\*'
 t_SIMBOLO_IGUAL             = r'='
 
-
 t_PUNTO_COMA                = r';'
 t_IZQ_PARENTESIS            = r'\('
 t_DER_PARENTESIS            = r'\)'
 
-def t_PRINTLN(t):
-    r'println'
-    return t
+t_OR                        = r'\|\|'
+t_NOT                       = r'!'
+t_AND                       = r'&&'
 
-def t_PRINT(t):
-    r'print'
-    return t
+t_MENOR                     = r'<'
+t_MAYOR                     = r'>'
+t_MENOR_IGUAL               = r'<='
+t_MAYOR_IGUAL               = r'>='
+t_IGUAL                     = r'=='
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'
+    t.type = reserved.get(t.value,'ID') 
     return t
 
 def t_DATO_TIPO_FLOAT64(t):
@@ -50,6 +61,7 @@ def t_DATO_TIPO_STRING(t):
 def t_newline(t):
     r'\n+'
     t.lexer.lineno += len(t.value)
+    
 def t_eof(t):
     t.lexer.lineno = 1
 

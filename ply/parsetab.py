@@ -6,9 +6,9 @@ _tabversion = '3.10'
 
 _lr_method = 'LALR'
 
-_lr_signature = 'leftSIMBOLO_SUMASIMBOLO_RESTAleftSIMBOLO_MULTIPLICACIONSIMBOLO_DIVICIONrightNEGATIVODATO_TIPO_FLOAT64 DATO_TIPO_INT64 DATO_TIPO_STRING DER_PARENTESIS ID IZQ_PARENTESIS PRINT PRINTLN PUNTO_COMA SIMBOLO_DIVICION SIMBOLO_IGUAL SIMBOLO_MULTIPLICACION SIMBOLO_RESTA SIMBOLO_SUMA TABULADORinit   : instruccionesinit   : instrucciones    : instruccioninstrucciones    : instruccion instruccionesinstruccion  : PRINTLN IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMAinstruccion  : PRINT IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMAinstruccion  : ID SIMBOLO_IGUAL expresion PUNTO_COMAinstruccion  : expresionexpresion    : expresion SIMBOLO_SUMA expresion\n                    | expresion SIMBOLO_RESTA expresion\n                    | expresion SIMBOLO_DIVICION expresion\n                    | expresion SIMBOLO_MULTIPLICACION expresionexpresion  : IZQ_PARENTESIS expresion DER_PARENTESISexpresion  : SIMBOLO_RESTA expresion %prec NEGATIVOexpresion    : DATO_TIPO_FLOAT64\n                    | DATO_TIPO_INT64\n                    | DATO_TIPO_STRINGexpresion    : ID'
+_lr_signature = 'initleftSIMBOLO_SUMASIMBOLO_RESTAleftSIMBOLO_MULTIPLICACIONSIMBOLO_DIVICIONrightNEGATIVOAND DATO_TIPO_FLOAT64 DATO_TIPO_INT64 DATO_TIPO_STRING DER_PARENTESIS ELSE END ID IF IGUAL IZQ_PARENTESIS MAYOR MAYOR_IGUAL MENOR MENOR_IGUAL NOT OR PRINT PRINTLN PUNTO_COMA SALTO SIMBOLO_DIVICION SIMBOLO_IGUAL SIMBOLO_MULTIPLICACION SIMBOLO_RESTA SIMBOLO_SUMA TABULADORinstruccion    : sentenciaifinstruccion    : asignacioninit   : instruccion    : impresioninstruccion  : expresionsentenciaif    : IF condicion instrucciones if_thenasignacion  : ID SIMBOLO_IGUAL expresion PUNTO_COMAinit   : instruccionesimpresion  : PRINTLN IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMAexpresion    : expresion SIMBOLO_SUMA expresion\n                    | expresion SIMBOLO_RESTA expresion\n                    | expresion SIMBOLO_DIVICION expresion\n                    | expresion SIMBOLO_MULTIPLICACION expresionif_then  : if_elseif\n                | if_elseinstrucciones    : instruccionif_then  : END PUNTO_COMAinstrucciones    : instruccion instruccionesimpresion  : PRINT IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMAexpresion  : IZQ_PARENTESIS expresion DER_PARENTESISif_elseif  : ELSE IF condicion instrucciones if_thenexpresion  : SIMBOLO_RESTA expresion %prec NEGATIVOif_else  : ELSE instrucciones END PUNTO_COMAexpresion    : DATO_TIPO_FLOAT64\n                    | DATO_TIPO_INT64\n                    | DATO_TIPO_STRINGcondicion    : expresion MENOR expresionexpresion    : ID'
     
-_lr_action_items = {'$end':([0,1,2,3,6,8,10,11,12,13,16,23,25,26,27,28,29,34,35,36,],[-2,0,-1,-3,-8,-18,-15,-16,-17,-4,-18,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'PRINTLN':([0,3,6,8,10,11,12,16,23,25,26,27,28,29,34,35,36,],[4,4,-8,-18,-15,-16,-17,-18,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'PRINT':([0,3,6,8,10,11,12,16,23,25,26,27,28,29,34,35,36,],[7,7,-8,-18,-15,-16,-17,-18,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'ID':([0,3,5,6,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[8,8,16,-8,-18,16,-15,-16,-17,16,-18,16,16,16,16,16,16,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'IZQ_PARENTESIS':([0,3,4,5,6,7,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[5,5,14,5,-8,21,-18,5,-15,-16,-17,5,-18,5,5,5,5,5,5,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'SIMBOLO_RESTA':([0,3,5,6,8,9,10,11,12,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,34,35,36,],[9,9,9,18,-18,9,-15,-16,-17,9,18,-18,9,9,9,9,9,9,-14,18,-13,-9,-10,-11,-12,18,18,-7,-5,-6,]),'DATO_TIPO_FLOAT64':([0,3,5,6,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[10,10,10,-8,-18,10,-15,-16,-17,10,-18,10,10,10,10,10,10,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'DATO_TIPO_INT64':([0,3,5,6,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[11,11,11,-8,-18,11,-15,-16,-17,11,-18,11,11,11,11,11,11,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'DATO_TIPO_STRING':([0,3,5,6,8,9,10,11,12,14,16,17,18,19,20,21,22,23,25,26,27,28,29,34,35,36,],[12,12,12,-8,-18,12,-15,-16,-17,12,-18,12,12,12,12,12,12,-14,-13,-9,-10,-11,-12,-7,-5,-6,]),'SIMBOLO_SUMA':([6,8,10,11,12,15,16,23,24,25,26,27,28,29,30,31,],[17,-18,-15,-16,-17,17,-18,-14,17,-13,-9,-10,-11,-12,17,17,]),'SIMBOLO_DIVICION':([6,8,10,11,12,15,16,23,24,25,26,27,28,29,30,31,],[19,-18,-15,-16,-17,19,-18,-14,19,-13,19,19,-11,-12,19,19,]),'SIMBOLO_MULTIPLICACION':([6,8,10,11,12,15,16,23,24,25,26,27,28,29,30,31,],[20,-18,-15,-16,-17,20,-18,-14,20,-13,20,20,-11,-12,20,20,]),'SIMBOLO_IGUAL':([8,],[22,]),'DER_PARENTESIS':([10,11,12,15,16,23,24,25,26,27,28,29,30,],[-15,-16,-17,25,-18,-14,32,-13,-9,-10,-11,-12,33,]),'PUNTO_COMA':([10,11,12,16,23,25,26,27,28,29,31,32,33,],[-15,-16,-17,-18,-14,-13,-9,-10,-11,-12,34,35,36,]),}
+_lr_action_items = {'$end':([0,1,2,3,4,5,6,7,9,14,15,16,17,24,29,30,31,32,33,38,40,41,42,46,49,52,53,57,58,],[-3,0,-8,-16,-1,-2,-4,-5,-28,-24,-25,-26,-18,-28,-22,-10,-11,-12,-13,-20,-6,-14,-15,-7,-17,-9,-19,-23,-21,]),'IF':([0,3,4,5,6,7,9,14,15,16,22,24,29,30,31,32,33,38,40,41,42,44,45,46,49,52,53,54,57,58,],[8,8,-1,-2,-4,-5,-28,-24,-25,-26,8,-28,-22,-10,-11,-12,-13,-20,-6,-14,-15,50,-27,-7,-17,-9,-19,8,-23,-6,]),'ID':([0,3,4,5,6,7,8,9,11,13,14,15,16,18,19,20,21,22,24,25,26,28,29,30,31,32,33,35,38,40,41,42,44,45,46,49,50,52,53,54,57,58,],[9,9,-1,-2,-4,-5,24,-28,24,24,-24,-25,-26,24,24,24,24,9,-28,24,24,24,-22,-10,-11,-12,-13,24,-20,-6,-14,-15,9,-27,-7,-17,24,-9,-19,9,-23,-6,]),'PRINTLN':([0,3,4,5,6,7,9,14,15,16,22,24,29,30,31,32,33,38,40,41,42,44,45,46,49,52,53,54,57,58,],[10,10,-1,-2,-4,-5,-28,-24,-25,-26,10,-28,-22,-10,-11,-12,-13,-20,-6,-14,-15,10,-27,-7,-17,-9,-19,10,-23,-6,]),'PRINT':([0,3,4,5,6,7,9,14,15,16,22,24,29,30,31,32,33,38,40,41,42,44,45,46,49,52,53,54,57,58,],[12,12,-1,-2,-4,-5,-28,-24,-25,-26,12,-28,-22,-10,-11,-12,-13,-20,-6,-14,-15,12,-27,-7,-17,-9,-19,12,-23,-6,]),'IZQ_PARENTESIS':([0,3,4,5,6,7,8,9,10,11,12,13,14,15,16,18,19,20,21,22,24,25,26,28,29,30,31,32,33,35,38,40,41,42,44,45,46,49,50,52,53,54,57,58,],[11,11,-1,-2,-4,-5,11,-28,26,11,28,11,-24,-25,-26,11,11,11,11,11,-28,11,11,11,-22,-10,-11,-12,-13,11,-20,-6,-14,-15,11,-27,-7,-17,11,-9,-19,11,-23,-6,]),'SIMBOLO_RESTA':([0,3,4,5,6,7,8,9,11,13,14,15,16,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,35,36,37,38,39,40,41,42,44,45,46,49,50,52,53,54,57,58,],[13,13,-1,-2,-4,19,13,-28,13,13,-24,-25,-26,13,13,13,13,13,19,-28,13,13,19,13,-22,-10,-11,-12,-13,13,19,19,-20,19,-6,-14,-15,13,19,-7,-17,13,-9,-19,13,-23,-6,]),'DATO_TIPO_FLOAT64':([0,3,4,5,6,7,8,9,11,13,14,15,16,18,19,20,21,22,24,25,26,28,29,30,31,32,33,35,38,40,41,42,44,45,46,49,50,52,53,54,57,58,],[14,14,-1,-2,-4,-5,14,-28,14,14,-24,-25,-26,14,14,14,14,14,-28,14,14,14,-22,-10,-11,-12,-13,14,-20,-6,-14,-15,14,-27,-7,-17,14,-9,-19,14,-23,-6,]),'DATO_TIPO_INT64':([0,3,4,5,6,7,8,9,11,13,14,15,16,18,19,20,21,22,24,25,26,28,29,30,31,32,33,35,38,40,41,42,44,45,46,49,50,52,53,54,57,58,],[15,15,-1,-2,-4,-5,15,-28,15,15,-24,-25,-26,15,15,15,15,15,-28,15,15,15,-22,-10,-11,-12,-13,15,-20,-6,-14,-15,15,-27,-7,-17,15,-9,-19,15,-23,-6,]),'DATO_TIPO_STRING':([0,3,4,5,6,7,8,9,11,13,14,15,16,18,19,20,21,22,24,25,26,28,29,30,31,32,33,35,38,40,41,42,44,45,46,49,50,52,53,54,57,58,],[16,16,-1,-2,-4,-5,16,-28,16,16,-24,-25,-26,16,16,16,16,16,-28,16,16,16,-22,-10,-11,-12,-13,16,-20,-6,-14,-15,16,-27,-7,-17,16,-9,-19,16,-23,-6,]),'END':([3,4,5,6,7,9,14,15,16,17,24,29,30,31,32,33,34,38,40,41,42,46,49,51,52,53,56,57,58,],[-16,-1,-2,-4,-5,-28,-24,-25,-26,-18,-28,-22,-10,-11,-12,-13,43,-20,-6,-14,-15,-7,-17,55,-9,-19,43,-23,-6,]),'ELSE':([3,4,5,6,7,9,14,15,16,17,24,29,30,31,32,33,34,38,40,41,42,46,49,52,53,56,57,58,],[-16,-1,-2,-4,-5,-28,-24,-25,-26,-18,-28,-22,-10,-11,-12,-13,44,-20,-6,-14,-15,-7,-17,-9,-19,44,-23,-21,]),'SIMBOLO_SUMA':([7,9,14,15,16,23,24,27,29,30,31,32,33,36,37,38,39,45,],[18,-28,-24,-25,-26,18,-28,18,-22,-10,-11,-12,-13,18,18,-20,18,18,]),'SIMBOLO_DIVICION':([7,9,14,15,16,23,24,27,29,30,31,32,33,36,37,38,39,45,],[20,-28,-24,-25,-26,20,-28,20,-22,20,20,-12,-13,20,20,-20,20,20,]),'SIMBOLO_MULTIPLICACION':([7,9,14,15,16,23,24,27,29,30,31,32,33,36,37,38,39,45,],[21,-28,-24,-25,-26,21,-28,21,-22,21,21,-12,-13,21,21,-20,21,21,]),'SIMBOLO_IGUAL':([9,],[25,]),'MENOR':([14,15,16,23,24,29,30,31,32,33,38,],[-24,-25,-26,35,-28,-22,-10,-11,-12,-13,-20,]),'DER_PARENTESIS':([14,15,16,24,27,29,30,31,32,33,37,38,39,],[-24,-25,-26,-28,38,-22,-10,-11,-12,-13,47,-20,48,]),'PUNTO_COMA':([14,15,16,24,29,30,31,32,33,36,38,43,47,48,55,],[-24,-25,-26,-28,-22,-10,-11,-12,-13,46,-20,49,52,53,57,]),}
 
 _lr_action = {}
 for _k, _v in _lr_action_items.items():
@@ -17,7 +17,7 @@ for _k, _v in _lr_action_items.items():
       _lr_action[_x][_k] = _y
 del _lr_action_items
 
-_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,3,],[2,13,]),'instruccion':([0,3,],[3,3,]),'expresion':([0,3,5,9,14,17,18,19,20,21,22,],[6,6,15,23,24,26,27,28,29,30,31,]),}
+_lr_goto_items = {'init':([0,],[1,]),'instrucciones':([0,3,22,44,54,],[2,17,34,51,56,]),'instruccion':([0,3,22,44,54,],[3,3,3,3,3,]),'sentenciaif':([0,3,22,44,54,],[4,4,4,4,4,]),'asignacion':([0,3,22,44,54,],[5,5,5,5,5,]),'impresion':([0,3,22,44,54,],[6,6,6,6,6,]),'expresion':([0,3,8,11,13,18,19,20,21,22,25,26,28,35,44,50,54,],[7,7,23,27,29,30,31,32,33,7,36,37,39,45,7,23,7,]),'condicion':([8,50,],[22,54,]),'if_then':([34,56,],[40,58,]),'if_elseif':([34,56,],[41,41,]),'if_else':([34,56,],[42,42,]),}
 
 _lr_goto = {}
 for _k, _v in _lr_goto_items.items():
@@ -27,22 +27,32 @@ for _k, _v in _lr_goto_items.items():
 del _lr_goto_items
 _lr_productions = [
   ("S' -> init","S'",1,None,None,None),
-  ('init -> instrucciones','init',1,'p_init','parser.py',17),
-  ('init -> <empty>','init',0,'p_vacio','parser.py',25),
-  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones_l1','parser.py',31),
-  ('instrucciones -> instruccion instrucciones','instrucciones',2,'p_instrucciones_l2','parser.py',37),
-  ('instruccion -> PRINTLN IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMA','instruccion',5,'p_instruccion_println','parser.py',46),
-  ('instruccion -> PRINT IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMA','instruccion',5,'p_instruccion_print','parser.py',62),
-  ('instruccion -> ID SIMBOLO_IGUAL expresion PUNTO_COMA','instruccion',4,'p_instruccion_asignacion','parser.py',79),
-  ('instruccion -> expresion','instruccion',1,'p_instruccion_expresion','parser.py',94),
-  ('expresion -> expresion SIMBOLO_SUMA expresion','expresion',3,'p_expresion_binario','parser.py',105),
-  ('expresion -> expresion SIMBOLO_RESTA expresion','expresion',3,'p_expresion_binario','parser.py',106),
-  ('expresion -> expresion SIMBOLO_DIVICION expresion','expresion',3,'p_expresion_binario','parser.py',107),
-  ('expresion -> expresion SIMBOLO_MULTIPLICACION expresion','expresion',3,'p_expresion_binario','parser.py',108),
-  ('expresion -> IZQ_PARENTESIS expresion DER_PARENTESIS','expresion',3,'p_expresion_par','parser.py',120),
-  ('expresion -> SIMBOLO_RESTA expresion','expresion',2,'p_expresion_negativo','parser.py',128),
-  ('expresion -> DATO_TIPO_FLOAT64','expresion',1,'p_expresion_datos','parser.py',135),
-  ('expresion -> DATO_TIPO_INT64','expresion',1,'p_expresion_datos','parser.py',136),
-  ('expresion -> DATO_TIPO_STRING','expresion',1,'p_expresion_datos','parser.py',137),
-  ('expresion -> ID','expresion',1,'p_expresion_id','parser.py',145),
+  ('instruccion -> sentenciaif','instruccion',1,'p_instruccion_sentenciaif','parser.py',6),
+  ('instruccion -> asignacion','instruccion',1,'p_instruccion_asignacion','parser.py',7),
+  ('init -> <empty>','init',0,'p_init_vacio','parser.py',7),
+  ('instruccion -> impresion','instruccion',1,'p_instruccion_impresion','parser.py',8),
+  ('instruccion -> expresion','instruccion',1,'p_instruccion_expresion','parser.py',9),
+  ('sentenciaif -> IF condicion instrucciones if_then','sentenciaif',4,'p_sentenciaif_if','parser.py',12),
+  ('asignacion -> ID SIMBOLO_IGUAL expresion PUNTO_COMA','asignacion',4,'p_asignacion','parser.py',13),
+  ('init -> instrucciones','init',1,'p_init','parser.py',13),
+  ('impresion -> PRINTLN IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMA','impresion',5,'p_impresion_println','parser.py',15),
+  ('expresion -> expresion SIMBOLO_SUMA expresion','expresion',3,'p_expresion_binario','parser.py',16),
+  ('expresion -> expresion SIMBOLO_RESTA expresion','expresion',3,'p_expresion_binario','parser.py',17),
+  ('expresion -> expresion SIMBOLO_DIVICION expresion','expresion',3,'p_expresion_binario','parser.py',18),
+  ('expresion -> expresion SIMBOLO_MULTIPLICACION expresion','expresion',3,'p_expresion_binario','parser.py',19),
+  ('if_then -> if_elseif','if_then',1,'p_sentenciaif_if_then','parser.py',20),
+  ('if_then -> if_else','if_then',1,'p_sentenciaif_if_then','parser.py',21),
+  ('instrucciones -> instruccion','instrucciones',1,'p_instrucciones_l1','parser.py',20),
+  ('if_then -> END PUNTO_COMA','if_then',2,'p_sentenciaif_if_thenend','parser.py',26),
+  ('instrucciones -> instruccion instrucciones','instrucciones',2,'p_instrucciones_l2','parser.py',26),
+  ('impresion -> PRINT IZQ_PARENTESIS expresion DER_PARENTESIS PUNTO_COMA','impresion',5,'p_impresion_print','parser.py',26),
+  ('expresion -> IZQ_PARENTESIS expresion DER_PARENTESIS','expresion',3,'p_expresion_par','parser.py',31),
+  ('if_elseif -> ELSE IF condicion instrucciones if_then','if_elseif',5,'p_sentenciaif_if_elseif','parser.py',34),
+  ('expresion -> SIMBOLO_RESTA expresion','expresion',2,'p_expresion_negativo','parser.py',39),
+  ('if_else -> ELSE instrucciones END PUNTO_COMA','if_else',4,'p_sentenciaif_if_else','parser.py',42),
+  ('expresion -> DATO_TIPO_FLOAT64','expresion',1,'p_expresion_datos','parser.py',46),
+  ('expresion -> DATO_TIPO_INT64','expresion',1,'p_expresion_datos','parser.py',47),
+  ('expresion -> DATO_TIPO_STRING','expresion',1,'p_expresion_datos','parser.py',48),
+  ('condicion -> expresion MENOR expresion','condicion',3,'p_condicion','parser.py',54),
+  ('expresion -> ID','expresion',1,'p_expresion_id','parser.py',56),
 ]
