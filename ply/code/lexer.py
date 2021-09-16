@@ -14,7 +14,7 @@ tokens = [
     'SIMBOLO_SUMA', 'SIMBOLO_RESTA', 'SIMBOLO_DIVICION', 'SIMBOLO_MULTIPLICACION', 'SIMBOLO_IGUAL',
     'PUNTO_COMA', 'IZQ_PARENTESIS', 'DER_PARENTESIS', 
     'OR', 'NOT', 'AND',
-    'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'IGUAL'
+    'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'IGUAL', 'NOIGUAL'
 ] + list(reserved.values())
 
 t_TABULADOR                 = r'\t'
@@ -39,6 +39,7 @@ t_MAYOR                     = r'>'
 t_MENOR_IGUAL               = r'<='
 t_MAYOR_IGUAL               = r'>='
 t_IGUAL                     = r'=='
+t_NOIGUAL                   = r'!='
 
 def t_ID(t):
     r'[a-zA-Z_][a-zA-Z0-9_]*'

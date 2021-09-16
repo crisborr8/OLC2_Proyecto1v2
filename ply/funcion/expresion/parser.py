@@ -1,15 +1,19 @@
 import ply.clases.clases as clase 
 import ply.report.reportes as rep
 import ply.report.graficar as graph
-import ply.funcion.asignacion.asignacion as asig
-import ply.funcion.expresion.aritmeticas as arit
+import ply.funcion.operadores.aritmeticas as arit
 
 #---------------------------------------------------------------------
 def p_instruccion_expresion(t):
     '''instruccion  : expresion'''
+    
+    new_stackable = []
+    if t[1].error == True:
+        rep.setError(t[1].value, t[1].fila, t[1].colu)
+    else:
+        new_stackable.append(clase.Stack('print', [str(t[1].value) + "\n"]))
 
-    t[0] = clase.Nodo(graph.setNodo('instruccion', [t[1].id]), None)
-    rep.resultado += str(t[1].res) + '\n'
+    t[0] = clase.Nodo(graph.setNodo('instruccion', [t[1].id]), new_stackable)
 
 #---------------------------------------------------------------------
 def p_expresion_binario(t):
@@ -17,29 +21,41 @@ def p_expresion_binario(t):
                     | expresion SIMBOLO_RESTA expresion
                     | expresion SIMBOLO_DIVICION expresion
                     | expresion SIMBOLO_MULTIPLICACION expresion'''
-    res = None
-    if t[2] == '+': res = arit.Suma(t[1].res, t[3].res)
-    elif t[2] == '-': res = arit.Resta(t[1].res, t[3].res) 
-    elif t[2] == '/': res = arit.Divicion(t[1].res, t[3].res)
-    elif t[2] == '*': res = arit.Multiplicacion(t[1].res, t[3].res)
+    
+    res = []
+    if t[1].error == True:
+        res = t[1].getValue()
+    elif t[3].error == True:
+        res = t[3].getValue()
+    else:
+        res = arit.getResult([t[1].value, t.lineno(1), t.lexpos(1)], [t[3].value, t.lineno(3), t.lexpos(3)], t[2])
 
-    dato_2 = clase.Nodo(graph.setHoja(t[2]), None)
-    t[0] = clase.Nodo(graph.setNodo('expresion', [t[1].id, dato_2.id, t[3].id]), res)
+    dato_2 = clase.Nodo(graph.setHoja(t[2]))
+    t[0] = clase.Nodo(graph.setNodo('expresion', [t[1].id, dato_2.id, t[3].id]))
+    t[0].setValue(res)
 
 #---------------------------------------------------------------------
 def p_expresion_par(t):
     'expresion  : IZQ_PARENTESIS expresion DER_PARENTESIS'
 
-    dato_1 = clase.Nodo(graph.setHoja('('), None)
-    dato_3 = clase.Nodo(graph.setHoja(')'), None)
-    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_1.id, t[2].id, dato_3.id]), t[2].res)
+    dato_1 = clase.Nodo(graph.setHoja('('))
+    dato_3 = clase.Nodo(graph.setHoja(')'))
+    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_1.id, t[2].id, dato_3.id]))
+    t[0].setValue(t[2].getValue())
 
 #---------------------------------------------------------------------
 def p_expresion_negativo(t):
     'expresion  : SIMBOLO_RESTA expresion %prec NEGATIVO'
 
-    dato_1 = clase.Nodo(graph.setHoja('-'), None)
-    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_1.id, t[2].id]), -t[2].res)
+    res = []
+    if t[2].error == True:
+        res = t[2].getValue()
+    else:
+        res = arit.setNegativo([t[2].value, t.lineno(2), t.lexpos(2)])
+
+    dato_1 = clase.Nodo(graph.setHoja('-'))
+    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_1.id, t[2].id]))
+    t[0].setValue(res)
 
 #---------------------------------------------------------------------
 def p_expresion_datos(t):
@@ -47,20 +63,27 @@ def p_expresion_datos(t):
                     | DATO_TIPO_INT64
                     | DATO_TIPO_STRING'''
 
-    dato_1 = clase.Nodo(graph.setHoja(t[1]), None)
-    dato_2 = clase.Nodo(graph.setNodo('DATO', [dato_1.id]), None)
-    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_2.id]), t[1])
+    dato_1 = clase.Nodo(graph.setHoja(t[1]))
+    dato_2 = clase.Nodo(graph.setNodo('DATO', [dato_1.id]))
+    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_2.id]))
+    t[0].setValue([False, t[1]])
+
+#---------------------------------------------------------------------
+def p_expresion_datos_id(t):
+    '''expresion    : dato'''
+
+    #codigo de busqueda de id
+    new_var = clase.current_vars
+    res = clase.Vars.getValue([t[1].value, t.lineno(1), t.lexpos(1)], new_var)
     
+    dato_1 = clase.Nodo(graph.setNodo('DATO', [t[1].id]))
+    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_1.id]))
+    t[0].setValue(res)
+
 #---------------------------------------------------------------------
 def p_expresion_id(t):
-    '''expresion    : ID'''
-    dato_1_1 = clase.Nodo(graph.setHoja(t[1]), None)
-    dato_1_2 = clase.Nodo(graph.setNodo('ID', [dato_1_1.id]), None)
-    dato_2 = clase.Nodo(graph.setNodo('DATO', [dato_1_2.id]), None)
+    '''dato  : ID'''
 
-    res = asig.getAsignacionValor(t[1], clase.tipo_actual)
-    if res[0] == 1:
-        rep.setError("Error, dato " + t[1] + " no existe\n", t.lineno(1), t.lexpos(1))
-        rep.resultado += "Error, dato " + t[1] + " no existe\n"
-        rep.line_error = True
-    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_2.id]), res[1])
+    dato_1 = clase.Nodo(graph.setHoja(t[1]))
+    t[0] = clase.Nodo(graph.setNodo('ID', [dato_1.id]))
+    t[0].setValue([False, t[1]])

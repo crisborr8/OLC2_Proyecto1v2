@@ -1,5 +1,5 @@
 from datetime import datetime
-import ply.clases.clases as clase
+import ply.clases.clases as clase 
 import ply.report.graficar as graph
 
 line_error = False
@@ -25,7 +25,7 @@ def initVariables():
     simbolos += "tr:nth-child(even) {  background-color: #dddddd;}</style></head><body><table>\n"
     simbolos += "<tr><th>Nombre</th><th>Tipo</th><th>Ambito</th><th>Fila</th><th>Columna</th></tr>\n"
 
-    clase.initGlobal()
+    clase.initVars()
     graph.initGraph()
 
 def getTime():
