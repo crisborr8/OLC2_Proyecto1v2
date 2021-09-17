@@ -58,17 +58,6 @@ def p_expresion_negativo(t):
     t[0].setValue(res)
 
 #---------------------------------------------------------------------
-def p_expresion_datos(t):
-    '''expresion    : DATO_TIPO_FLOAT64
-                    | DATO_TIPO_INT64
-                    | DATO_TIPO_STRING'''
-
-    dato_1 = clase.Nodo(graph.setHoja(t[1]))
-    dato_2 = clase.Nodo(graph.setNodo('DATO', [dato_1.id]))
-    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_2.id]))
-    t[0].setValue([False, t[1]])
-
-#---------------------------------------------------------------------
 def p_expresion_datos_id(t):
     '''expresion    : dato'''
 
@@ -76,9 +65,25 @@ def p_expresion_datos_id(t):
     new_var = clase.current_vars
     res = clase.Vars.getValue([t[1].value, t.lineno(1), t.lexpos(1)], new_var)
     
-    dato_1 = clase.Nodo(graph.setNodo('DATO', [t[1].id]))
     t[0] = clase.Nodo(graph.setNodo('expresion', [dato_1.id]))
     t[0].setValue(res)
+
+#---------------------------------------------------------------------
+def p_expresion_dato(t):
+    '''expresion    : dato_numerico'''
+    
+    t[0] = clase.Nodo(graph.setNodo('expresion', [t[1].id]))
+    t[0].setValue(t[1].getValue())
+
+#---------------------------------------------------------------------
+def p_expresion_dato_numerico(t):
+    '''dato_numerico    : DATO_TIPO_FLOAT64
+                        | DATO_TIPO_INT64
+                        | DATO_TIPO_STRING'''
+
+    dato_1 = clase.Nodo(graph.setHoja(t[1]))
+    t[0] = clase.Nodo(graph.setNodo('DATO', [dato_1.id]))
+    t[0].setValue([False, t[1]])
 
 #---------------------------------------------------------------------
 def p_expresion_id(t):

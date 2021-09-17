@@ -15,6 +15,7 @@ from ply.funcion.print.parser import *
 from ply.funcion.expresion.parser import *
 from ply.funcion.asignacion.parser import *
 from ply.funcion.ifelse.parser import *
+from ply.funcion.forin.parser import *
 #---------------------------------------------------------------------
 #---------------------------------------------------------------------
 def p_error(t):

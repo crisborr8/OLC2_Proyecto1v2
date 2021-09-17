@@ -5,14 +5,16 @@ reserved = {
     'print'     : 'PRINT',
     'if'        : 'IF',
     'else'      : 'ELSE',
-    'end'       : 'END'
+    'end'       : 'END',
+    'for'       : 'FOR',
+    'in'        : 'IN'
 }
 tokens = [
     'TABULADOR', 'SALTO',
     'ID',
     'DATO_TIPO_FLOAT64', 'DATO_TIPO_INT64', 'DATO_TIPO_STRING',
     'SIMBOLO_SUMA', 'SIMBOLO_RESTA', 'SIMBOLO_DIVICION', 'SIMBOLO_MULTIPLICACION', 'SIMBOLO_IGUAL',
-    'PUNTO_COMA', 'IZQ_PARENTESIS', 'DER_PARENTESIS', 
+    'PUNTO_COMA', 'PUNTO_PUNTO', 'IZQ_PARENTESIS', 'DER_PARENTESIS', 
     'OR', 'NOT', 'AND',
     'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'IGUAL', 'NOIGUAL'
 ] + list(reserved.values())
@@ -27,6 +29,7 @@ t_SIMBOLO_MULTIPLICACION    = r'\*'
 t_SIMBOLO_IGUAL             = r'='
 
 t_PUNTO_COMA                = r';'
+t_PUNTO_PUNTO               = r':'
 t_IZQ_PARENTESIS            = r'\('
 t_DER_PARENTESIS            = r'\)'
 

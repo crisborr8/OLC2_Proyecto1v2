@@ -7,7 +7,10 @@ def p_instruccion_sentenciaif(t):
     '''instruccion    : sentenciaif'''
 
     new_stackable = []
-    new_stackable.append(clase.Stack('if', t[1].stack))
+    if t[1].error == True:
+        rep.setError(t[1].value, t[1].fila, t[1].colu)
+    else:
+        new_stackable.append(clase.Stack('if', t[1].stack))
 
     t[0] = clase.Nodo(graph.setNodo('instruccion', [t[1].id]), new_stackable)
     
@@ -28,6 +31,7 @@ def p_sentenciaif_if(t):
 
     dato_1 = clase.Nodo(graph.setHoja('if'))
     t[0] = clase.Nodo(graph.setNodo('sentenciaif', [dato_1.id, t[2].id, t[3].id, t[4].id]), childrens)
+    t[0].setValue(res)
 
 #---------------------------------------------------------------------
 def p_sentenciaif_if_thenend(t):
@@ -68,6 +72,7 @@ def p_sentenciaif_if_elseif(t):
     dato_1 = clase.Nodo(graph.setHoja('else'))
     dato_2 = clase.Nodo(graph.setHoja('if'))
     t[0] = clase.Nodo(graph.setNodo('if_elseif', [dato_1.id, dato_2.id, t[3].id, t[4].id, t[5].id]), new_stackable)
+    t[0].setValue(res)
 
 #---------------------------------------------------------------------
 def p_sentenciaif_if_else(t):
