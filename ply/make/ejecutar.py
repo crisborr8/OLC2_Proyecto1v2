@@ -19,6 +19,7 @@ def init(stack):
     respond = ""
     print("iniciando ejecucion")
     ejecutarStack(stack)
+    print("Respuesta: " + respond)
     rep.resultado = respond
 
 #----------------------------------------------------------
@@ -29,19 +30,20 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
     for child in stack:
         child.father = father
 
-    return_res = [[False, None], False]  
-    return_flag = False
+    return_res = [[False, None], False]  #[return, respond] break
 
     for inst in stack:
         current_stack = stack
         #-----------------------------------------------------------------------------------------
         if inst.type == 'exp':
-            print("exp a leer->" + inst.children[0])
+            print("exp buscando -> " +inst.children[0])
             exp_parser.parse(inst.children[0], tracking=True)
             if clase.res.error:
                 rep.setError(clase.res.value, inst.fila, clase.res.pos)
             else:
-                respond += str(clase.res.value) + '\n'
+                pass
+                #respond += str(clase.res.value) + '\n'
+                #print("exp respond con: " + str(clase.res.value) + "\n")
         #-----------------------------------------------------------------------------------------
         elif inst.type == 'print':
             exp_parser.parse(inst.children[1], tracking=True)
@@ -112,16 +114,17 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
             param_res = []
             if inst.children[0].children[1] == True:
                 param_res = getParams(inst.children[0].children[2])
-                inst.children[1].extend(param_res)
+                param_res.extend(inst.children[1])
+                inst.children[1] = param_res
 
             rep.setSimbolo(inst.children[0].children[0], inst.type, ambito, inst.fila, inst.children[2])
             #respond += ejecutarStack(inst.children[1], stack, ambito + " - Local Funcion " + inst.children[0].children[0])
                     
         #-----------------------------------------------------------------------------------------
         if return_res[1]:
-            return [return_res[0], True]
+            return return_res
         #-----------------------------------------------------------------------------------------
-    return [[False, None], False]
+    return return_res
 
 def getId(stack, id):
     for var in stack:
@@ -140,10 +143,41 @@ def getFuncion(stack, id):
                 if var_.children[1]:
                     return [True, "Error, La funcion '" + id + "' necesita parametros"]
                 else:
-                    return ejecutarStack(var.children[1], stack, "Global - Local Funcion" + id)[0]
+                    return ejecutarStack(var.children[1], stack, "Global - Local Funcion " + id + "()")[0]
     if stack[0].father != None:
         return getFuncion(stack[0].father, id)
     return [True, "Error, Id '" + id + "' no encontrado"]
+
+def getFuncionParam(stack, id, params):
+    for var in stack:
+        if var.type == 'funcion':
+            var_ = var.children[0]
+            if id == var_.children[0]:
+                if var_.children[1]:
+                    param_res = getParams(var_.children[2])
+                    if len(param_res) != len(params):
+                        return [True, "Error, La funcion " + id + " necesita " + str(len(param_res)) + " parametros"]
+                    else:
+                        print("si son iguales")
+                        i = 0
+                        for value in params:
+                            var.children[1][i].children[2] = value
+                            print("set " + var.children[1][i].children[0] + " to " + str(var.children[1][i].children[2]))
+                            i = i + 1
+                        print("variables agregadas")
+                        res = ejecutarStack(var.children[1], stack, "Global - Local Funcion " + id + "("+var_.children[2]+")")[0]                     
+                        i = 0
+                        for value in params:
+                            var.children[1][i].children[2] = value
+                            print("set " + var.children[1][i].children[0] + " to " + str(var.children[1][i].children[2]))
+                            i = i + 1
+                        return res
+                else:
+                    return [True, "Error, La funcion '" + id + "' NO necesita parametros"]
+    if stack[0].father != None:
+        return getFuncionParam(stack[0].father, id, params)
+    return [True, "Error, Id '" + id + "' no encontrado"]
+
 
 def getRango(rango):
     start = 0
@@ -167,14 +201,15 @@ def getRango(rango):
 
 def getParams(params):
     var = []
+    print(params)
     params = params.split(',')
     for pr in params:
-        children_var = []
-        children_var.append(pr.strip())    #0 - ID
-        children_var.append(True)          #1 - Existe
-        children_var.append(0)             #2 - Valor
-        children_var.append("valor")       #3 - Referencia o por valor
+        children = []
+        children.append(pr.strip())    #0 - ID
+        children.append(True)          #1 - Existe
+        children.append(0)             #2 - Valor
+        children.append("valor")       #3 - Referencia o por valor
 
-        new_stack_var = clase.Stack('var_ext', children_var)
-        var.append([new_stack_var])
+        new_stack_var = clase.Stack('var_ext', children)
+        var.extend([new_stack_var])
     return var

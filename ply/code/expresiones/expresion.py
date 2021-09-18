@@ -5,7 +5,6 @@ import ply.report.graficar as graph
 def p_instruccion_expresion(t):
     '''instruccion  : expresion'''
     
-    print("esto leen en exp->>" + clase.texto[t[1].start: t[1].end])
     new_stack = clase.Stack('exp', [clase.texto[t[1].start: t[1].end]])
     new_stack.setFila(t.lineno(1))
 
