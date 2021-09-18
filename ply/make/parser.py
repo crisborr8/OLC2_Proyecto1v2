@@ -3,6 +3,7 @@ precedence = (
     ('left','MENOR','MAYOR','MENOR_IGUAL','MAYOR_IGUAL','IGUAL','NOIGUAL'),
     ('left','SIMBOLO_SUMA','SIMBOLO_RESTA'),
     ('left','SIMBOLO_MULTIPLICACION','SIMBOLO_DIVICION'),
+    ('left','SIMBOLO_POTENCIA','SIMBOLO_MOD'),
     ('right','NEGATIVO'),
     )
 #---------------------------------------------------------------------

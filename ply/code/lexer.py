@@ -9,13 +9,37 @@ reserved = {
     'for'       : 'FOR',
     'in'        : 'IN',
     'while'     : 'WHILE',
-    'function'  : 'FUNCION'
+    'function'  : 'FUNCION',
+    'log10'     : 'LOG10',
+    'log'       : 'LOG',
+    'sin'       : 'SIN',
+    'cos'       : 'COS',
+    'tan'       : 'TAN',
+    'sqrt'      : 'SQRT',
+    'uppercase' : 'UPPER',
+    'lowercase' : 'LOWER',
+    'true'      : 'TRUE',
+    'false'     : 'FALSE',
+
+    'parse'     : 'PARSE',
+    'trunc'     : 'TRUNC',
+    'float'     : 'FLOAT',
+    'typeof'    : 'TYPEOF',
+    'string'    : 'STRING_FUNC',
+
+    'Int64'     : 'INT64',
+    'Float64'   : 'FLOAT64',
+    'Bool'      : 'BOOL',
+    'Char'      : 'CHAR',
+    'String'    : 'STRING',
+    'nothing'   : 'NOTHING'
 }
 tokens = [
     'TABULADOR', 'SALTO',
     'ID',
-    'DATO_TIPO_FLOAT64', 'DATO_TIPO_INT64', 'DATO_TIPO_STRING',
+    'DATO_TIPO_FLOAT64', 'DATO_TIPO_INT64', 'DATO_TIPO_STRING', 'DATO_TIPO_CHAR',
     'SIMBOLO_SUMA', 'SIMBOLO_RESTA', 'SIMBOLO_DIVICION', 'SIMBOLO_MULTIPLICACION', 'SIMBOLO_IGUAL',
+    'SIMBOLO_POTENCIA', 'SIMBOLO_MOD',
     'COMA', 'PUNTO_COMA', 'PUNTO_PUNTO', 'IZQ_PARENTESIS', 'DER_PARENTESIS', 
     'OR', 'NOT', 'AND',
     'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'IGUAL', 'NOIGUAL'
@@ -28,6 +52,8 @@ t_SIMBOLO_SUMA              = r'\+'
 t_SIMBOLO_RESTA             = r'-'
 t_SIMBOLO_DIVICION          = r'/'
 t_SIMBOLO_MULTIPLICACION    = r'\*'
+t_SIMBOLO_POTENCIA          = r'\^'
+t_SIMBOLO_MOD               = r'%'
 t_SIMBOLO_IGUAL             = r'='
 
 t_COMA                      = r','
@@ -62,6 +88,10 @@ def t_DATO_TIPO_INT64(t):
     return t
 def t_DATO_TIPO_STRING(t):
     r'\"([^\\\n]|(\\.))*?\"'
+    t.value = str(t.value)
+    return t
+def t_DATO_TIPO_CHAR(t):
+    r'\'([^\\\n]|(\\.))\''
     t.value = str(t.value)
     return t
 
