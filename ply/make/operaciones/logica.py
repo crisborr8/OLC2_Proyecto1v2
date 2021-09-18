@@ -15,6 +15,8 @@ def Not(t1, t2):
 def Menor(t1, t2):
     t1_val = t1[0]
     t2_val = t2[0]
+    print(t1_val)
+    print(t2_val)
     if t1_val < t2_val:
         return [False, True]
     return [False, False]

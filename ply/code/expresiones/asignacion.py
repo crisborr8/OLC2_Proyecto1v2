@@ -13,7 +13,7 @@ def p_asignacion(t):
     
     children = []
     children.append(t[1].value)                             #0 - ID
-    children.append(True)                                   #1 - Existe
+    children.append(False)                                   #1 - Existe
     children.append(0)                                      #2 - Valor
     children.append("referencia")                           #3 - Referencia o por valor
     children.append(clase.texto[t[3].start: t[3].end])      #4 - Texto lexema

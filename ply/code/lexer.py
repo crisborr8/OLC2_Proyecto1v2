@@ -7,14 +7,15 @@ reserved = {
     'else'      : 'ELSE',
     'end'       : 'END',
     'for'       : 'FOR',
-    'in'        : 'IN'
+    'in'        : 'IN',
+    'while'     : 'WHILE'
 }
 tokens = [
     'TABULADOR', 'SALTO',
     'ID',
     'DATO_TIPO_FLOAT64', 'DATO_TIPO_INT64', 'DATO_TIPO_STRING',
     'SIMBOLO_SUMA', 'SIMBOLO_RESTA', 'SIMBOLO_DIVICION', 'SIMBOLO_MULTIPLICACION', 'SIMBOLO_IGUAL',
-    'PUNTO_COMA', 'PUNTO_PUNTO', 'IZQ_PARENTESIS', 'DER_PARENTESIS', 
+    'COMA', 'PUNTO_COMA', 'PUNTO_PUNTO', 'IZQ_PARENTESIS', 'DER_PARENTESIS', 
     'OR', 'NOT', 'AND',
     'MENOR', 'MAYOR', 'MENOR_IGUAL', 'MAYOR_IGUAL', 'IGUAL', 'NOIGUAL'
 ] + list(reserved.values())
@@ -28,6 +29,7 @@ t_SIMBOLO_DIVICION          = r'/'
 t_SIMBOLO_MULTIPLICACION    = r'\*'
 t_SIMBOLO_IGUAL             = r'='
 
+t_COMA                      = r','
 t_PUNTO_COMA                = r';'
 t_PUNTO_PUNTO               = r':'
 t_IZQ_PARENTESIS            = r'\('
@@ -59,7 +61,7 @@ def t_DATO_TIPO_INT64(t):
     return t
 def t_DATO_TIPO_STRING(t):
     r'\"([^\\\n]|(\\.))*?\"'
-    t.value = str(t.value)[1:-1]
+    t.value = str(t.value)
     return t
 
 def t_newline(t):

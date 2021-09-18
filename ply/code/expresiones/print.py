@@ -49,3 +49,12 @@ def p_imprimir_contenido(t):
     
     t[0] = clase.Nodo(graph.setNodo('contenido', [t[1].id]))
     t[0].setPos(t[1].getPos())
+
+def p_imprimir_contenido_coma(t):
+    '''contenido   : expresion COMA contenido'''
+    
+    dato_2 = clase.Nodo(graph.setHoja(','))
+    t[0] = clase.Nodo(graph.setNodo('contenido', [t[1].id, dato_2.id, t[3].id]))
+    t[0].setPos([t[1].start, t[3].end])
+
+

@@ -36,6 +36,7 @@ def p_expresion_negativo(t):
 
     dato_1 = clase.Nodo(graph.setHoja('-'))
     t[0] = clase.Nodo(graph.setNodo('expresion', [dato_1.id, t[2].id]))
+    t[0].setPos([t[1].start, t[2].end])
 
 #---------------------------------------------------------------------
 def p_expresion_numerico(t):

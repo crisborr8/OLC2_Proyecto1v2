@@ -14,6 +14,7 @@ current_stack = None
 
 #----------------------------------------------------------
 def init(stack):
+    print("iniciando ejecucion")
     rep.resultado = ejecutarStack(stack)
 
 #----------------------------------------------------------
@@ -30,6 +31,7 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
         current_stack = stack
         #-----------------------------------------------------------------------------------------
         if inst.type == 'exp':
+            print("exp a leer->" + inst.children[0])
             exp_parser.parse(inst.children[0], tracking=True)
             if clase.res.error:
                 rep.setError(clase.res.value, inst.fila, clase.res.pos)
@@ -37,6 +39,7 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                 respond += str(clase.res.value) + '\n'
         #-----------------------------------------------------------------------------------------
         elif inst.type == 'print':
+            print("print a leer->" + inst.children[1])
             exp_parser.parse(inst.children[1], tracking=True)
             if clase.res.error:
                 rep.setError(clase.res.value, inst.fila, inst.children[2] + clase.res.pos)
@@ -44,15 +47,28 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                 respond += str(clase.res.value) + inst.children[0]
         #-----------------------------------------------------------------------------------------
         elif inst.type == 'var':
+            print("var a leer->" + str(inst.children[4]))
             exp_parser.parse(inst.children[4], tracking=True)
             if clase.res.error:
                 inst.children[1] = False
                 rep.setError(clase.res.value, inst.fila, clase.res.pos)
             else:
+                new_var = True
+                _current_stack = stack
+                while stack != None:
+                    for var in stack:
+                        if var.type == 'var':
+                            if inst.children[0] == var.children[0] and var.children[1]:
+                                var.children[2] =  clase.res.value
+                                new_var = False
+                    stack = stack[0].father
+                stack = _current_stack
+
                 inst.children[1] = True
                 inst.children[2] = clase.res.value
 
-                rep.setSimbolo(inst.children[0], inst.type, ambito, inst.fila, inst.children[5])
+                if new_var:
+                    rep.setSimbolo(inst.children[0], inst.type, ambito, inst.fila, inst.children[5])
         #-----------------------------------------------------------------------------------------
         elif inst.type == "if":
             exp_parser.parse(inst.children[0], tracking=True)
@@ -77,19 +93,29 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                     inst.children[0].children[2] = var
                     respond += ejecutarStack(inst.children[1], stack, ambito + " - Local For")
         #-----------------------------------------------------------------------------------------
+        elif inst.type == "while":
+            while True:
+                exp_parser.parse(inst.children[0], tracking=True)
+                if clase.res.error:
+                    rep.setError(clase.res.value, inst.fila, inst.children[1] + clase.res.pos)
+                    break
+                else:
+                    if clase.res.value == True:
+                        respond += ejecutarStack(inst.children[2], stack, ambito + " - Local While")
+                    else:
+                        break
+        #-----------------------------------------------------------------------------------------
     return respond
 
 def getId(stack, id):
     for var in stack:
-        if var.type == 'var':
-            if id == var.children[0] and var.children[1]:
-                return [False, var.children[2]]
-        elif var.type == 'var_ext':
+        if var.type == 'var' or var.type == 'var_ext':
             if id == var.children[0] and var.children[1]:
                 return [False, var.children[2]]
     if stack[0].father != None:
         return getId(stack[0].father, id)
-    return [True, "Error, Id no encontrado"]
+    return [True, "Error, Id '" + id + "' no encontrado"]
+
 
 def getRango(rango):
     start = 0

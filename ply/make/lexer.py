@@ -44,6 +44,7 @@ def t_DATO_TIPO_INT64(t):
     return t
 def t_DATO_TIPO_STRING(t):
     r'\"([^\\\n]|(\\.))*?\"'
+    print(t.value)
     t.value = str(t.value)[1:-1]
     return t
 

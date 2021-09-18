@@ -42,18 +42,26 @@ def p_expresion_par(t):
 def p_expresion_negativo(t):
     'expresion  : SIMBOLO_RESTA expresion %prec NEGATIVO'
 
-    res = ejecutar.getId(ejecutar.current_stack, t[2])
-    t[0] = clase.Result(res[1], res[0])
-
-    if res[1]: clase.Result(t.lexpos(2))
+    if t[2].error:
+        t[0] = t[2]
+    else:
+        res = arit.Negativo([t[2].value, t.lexpos(2)], t[2])
+        t[0] = clase.Result(res[1], res[0])
+        if res[0]: 
+            t[0].pos = res[2]
 
 #---------------------------------------------------------------------
 def p_expresion_dato_numerico(t):
     '''dato_numerico    : DATO_TIPO_FLOAT64
-                        | DATO_TIPO_INT64
-                        | DATO_TIPO_STRING'''
+                        | DATO_TIPO_INT64'''
 
     t[0] = clase.Result(t[1])
+
+#---------------------------------------------------------------------
+def p_expresion_dato_string(t):
+    '''dato_numerico    : DATO_TIPO_STRING'''
+    
+    t[0] = clase.Result(t[1][1:-1])
 
 #---------------------------------------------------------------------
 def p_expresion_dato_id(t):
@@ -62,4 +70,4 @@ def p_expresion_dato_id(t):
     res = ejecutar.getId(ejecutar.current_stack, t[1])
     t[0] = clase.Result(res[1], res[0])
 
-    if res[1]: clase.Result(t.lexpos(1))
+    if res[0]: t[0].pos = t.lexpos(1)
