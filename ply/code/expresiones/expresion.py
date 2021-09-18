@@ -5,6 +5,7 @@ import ply.report.graficar as graph
 def p_instruccion_expresion(t):
     '''instruccion  : expresion'''
     
+    print("esto leen en exp->>" + clase.texto[t[1].start: t[1].end])
     new_stack = clase.Stack('exp', [clase.texto[t[1].start: t[1].end]])
     new_stack.setFila(t.lineno(1))
 
@@ -41,7 +42,8 @@ def p_expresion_negativo(t):
 #---------------------------------------------------------------------
 def p_expresion_numerico(t):
     '''expresion    : dato_numerico
-                    | dato_id'''
+                    | dato_id
+                    | funcion_exp'''
 
     t[0] = clase.Nodo(graph.setNodo('expresion', [t[1].id]))
     t[0].setPos(t[1].getPos())

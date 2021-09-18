@@ -5,7 +5,7 @@ import ply.clases.clases as clase
 #---------------------------------------------------------------------
 def p_instruccion_expresion(t):
     '''instruccion  : contenido'''
-    print("valor->" + str(t[1].value))
+    
     t[0] = t[1]
 
 #---------------------------------------------------------------------

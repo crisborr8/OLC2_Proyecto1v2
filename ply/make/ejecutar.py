@@ -11,21 +11,26 @@ exp_parser = yacc.yacc()
 #----------------------------------------------------------
 import ply.report.reportes as rep
 current_stack = None
+respond = ""
 
 #----------------------------------------------------------
 def init(stack):
+    global respond
+    respond = ""
     print("iniciando ejecucion")
-    rep.resultado = ejecutarStack(stack)
+    ejecutarStack(stack)
+    rep.resultado = respond
 
 #----------------------------------------------------------
 
 def ejecutarStack(stack, father = None, ambito = "Global"):
-    global current_stack
+    global current_stack, respond
 
     for child in stack:
         child.father = father
-        
-    respond = ""
+
+    return_res = [[False, None], False]  
+    return_flag = False
 
     for inst in stack:
         current_stack = stack
@@ -39,7 +44,6 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                 respond += str(clase.res.value) + '\n'
         #-----------------------------------------------------------------------------------------
         elif inst.type == 'print':
-            print("print a leer->" + inst.children[1])
             exp_parser.parse(inst.children[1], tracking=True)
             if clase.res.error:
                 rep.setError(clase.res.value, inst.fila, inst.children[2] + clase.res.pos)
@@ -47,7 +51,6 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                 respond += str(clase.res.value) + inst.children[0]
         #-----------------------------------------------------------------------------------------
         elif inst.type == 'var':
-            print("var a leer->" + str(inst.children[4]))
             exp_parser.parse(inst.children[4], tracking=True)
             if clase.res.error:
                 inst.children[1] = False
@@ -76,9 +79,9 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                 rep.setError(clase.res.value, inst.fila, inst.children[1] + clase.res.pos)
             else:
                 if clase.res.value == True:
-                    respond += ejecutarStack(inst.children[2], stack, ambito + " - Local If")
+                    return_res = ejecutarStack(inst.children[2], stack, ambito + " - Local If")
                 else:
-                    respond += ejecutarStack(inst.children[3], stack, ambito + " - Local If")
+                    return_res = ejecutarStack(inst.children[3], stack, ambito + " - Local If")
         #-----------------------------------------------------------------------------------------
         elif inst.type == "for":
             rango_res = []
@@ -91,7 +94,7 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                 for var in rango_res[1]:
                     current_stack = stack
                     inst.children[0].children[2] = var
-                    respond += ejecutarStack(inst.children[1], stack, ambito + " - Local For")
+                    return_res = ejecutarStack(inst.children[1], stack, ambito + " - Local For")
         #-----------------------------------------------------------------------------------------
         elif inst.type == "while":
             while True:
@@ -101,11 +104,24 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                     break
                 else:
                     if clase.res.value == True:
-                        respond += ejecutarStack(inst.children[2], stack, ambito + " - Local While")
+                        return_res = ejecutarStack(inst.children[2], stack, ambito + " - Local While")
                     else:
                         break
         #-----------------------------------------------------------------------------------------
-    return respond
+        elif inst.type == "funcion":
+            param_res = []
+            if inst.children[0].children[1] == True:
+                param_res = getParams(inst.children[0].children[2])
+                inst.children[1].extend(param_res)
+
+            rep.setSimbolo(inst.children[0].children[0], inst.type, ambito, inst.fila, inst.children[2])
+            #respond += ejecutarStack(inst.children[1], stack, ambito + " - Local Funcion " + inst.children[0].children[0])
+                    
+        #-----------------------------------------------------------------------------------------
+        if return_res[1]:
+            return [return_res[0], True]
+        #-----------------------------------------------------------------------------------------
+    return [[False, None], False]
 
 def getId(stack, id):
     for var in stack:
@@ -116,6 +132,18 @@ def getId(stack, id):
         return getId(stack[0].father, id)
     return [True, "Error, Id '" + id + "' no encontrado"]
 
+def getFuncion(stack, id):
+    for var in stack:
+        if var.type == 'funcion':
+            var_ = var.children[0]
+            if id == var_.children[0]:
+                if var_.children[1]:
+                    return [True, "Error, La funcion '" + id + "' necesita parametros"]
+                else:
+                    return ejecutarStack(var.children[1], stack, "Global - Local Funcion" + id)[0]
+    if stack[0].father != None:
+        return getFuncion(stack[0].father, id)
+    return [True, "Error, Id '" + id + "' no encontrado"]
 
 def getRango(rango):
     start = 0
@@ -136,3 +164,17 @@ def getRango(rango):
             for i in range(start, end + 1):
                 rango.append(i)
             return [False, rango]
+
+def getParams(params):
+    var = []
+    params = params.split(',')
+    for pr in params:
+        children_var = []
+        children_var.append(pr.strip())    #0 - ID
+        children_var.append(True)          #1 - Existe
+        children_var.append(0)             #2 - Valor
+        children_var.append("valor")       #3 - Referencia o por valor
+
+        new_stack_var = clase.Stack('var_ext', children_var)
+        var.append([new_stack_var])
+    return var

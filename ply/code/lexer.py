@@ -8,7 +8,8 @@ reserved = {
     'end'       : 'END',
     'for'       : 'FOR',
     'in'        : 'IN',
-    'while'     : 'WHILE'
+    'while'     : 'WHILE',
+    'function'  : 'FUNCION'
 }
 tokens = [
     'TABULADOR', 'SALTO',

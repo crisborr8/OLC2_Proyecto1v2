@@ -9,6 +9,12 @@ def p_instruccion_expresion(t):
     t[0] = t[1]
 
 #---------------------------------------------------------------------
+def p_expresion_par(t):
+    '''expresion    : IZQ_PARENTESIS expresion DER_PARENTESIS'''
+
+    t[0] = t[2]
+
+#---------------------------------------------------------------------
 def p_expresion_binario(t):
     '''expresion    : expresion SIMBOLO_SUMA expresion
                     | expresion SIMBOLO_RESTA expresion
@@ -24,20 +30,13 @@ def p_expresion_binario(t):
         t[0] = clase.Result(res[1], res[0])
         if res[0]: 
             t[0].pos = res[2]
-
+    
 #---------------------------------------------------------------------
 def p_expresion_numerico(t):
     '''expresion    : dato_numerico
-                    | dato_id'''
+                    | expresion_id'''
 
     t[0] = t[1]
-    
-#---------------------------------------------------------------------
-def p_expresion_par(t):
-    '''expresion    : IZQ_PARENTESIS expresion DER_PARENTESIS'''
-
-    t[0] = t[2]
-
 #---------------------------------------------------------------------
 def p_expresion_negativo(t):
     'expresion  : SIMBOLO_RESTA expresion %prec NEGATIVO'
@@ -64,10 +63,17 @@ def p_expresion_dato_string(t):
     t[0] = clase.Result(t[1][1:-1])
 
 #---------------------------------------------------------------------
-def p_expresion_dato_id(t):
-    '''dato_id    : ID'''
+def p_expresion_dato(t):
+    '''expresion_id    : dato_id'''
 
     res = ejecutar.getId(ejecutar.current_stack, t[1])
     t[0] = clase.Result(res[1], res[0])
 
     if res[0]: t[0].pos = t.lexpos(1)
+
+
+#---------------------------------------------------------------------
+def p_expresion_dato_id(t):
+    '''dato_id    : ID'''
+
+    t[0] = t[1]
