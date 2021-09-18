@@ -14,33 +14,36 @@ current_stack = None
 
 #----------------------------------------------------------
 def init(stack):
-    rep.resultado = ejecutarStack(stack, None)
+    rep.resultado = ejecutarStack(stack)
 
 #----------------------------------------------------------
 
-def ejecutarStack(stack, father):
+def ejecutarStack(stack, father = None, ambito = "Global"):
     global current_stack
 
     for child in stack:
         child.father = father
         
     respond = ""
-    current_stack = stack
 
     for inst in stack:
-        if inst.type == 'exp':   #---------------------------------------------------------------------
+        current_stack = stack
+        #-----------------------------------------------------------------------------------------
+        if inst.type == 'exp':
             exp_parser.parse(inst.children[0], tracking=True)
             if clase.res.error:
                 rep.setError(clase.res.value, inst.fila, clase.res.pos)
             else:
                 respond += str(clase.res.value) + '\n'
-        elif inst.type == 'print': #---------------------------------------------------------------------
+        #-----------------------------------------------------------------------------------------
+        elif inst.type == 'print':
             exp_parser.parse(inst.children[1], tracking=True)
             if clase.res.error:
                 rep.setError(clase.res.value, inst.fila, inst.children[2] + clase.res.pos)
             else:
                 respond += str(clase.res.value) + inst.children[0]
-        elif inst.type == 'var': #---------------------------------------------------------------------
+        #-----------------------------------------------------------------------------------------
+        elif inst.type == 'var':
             exp_parser.parse(inst.children[4], tracking=True)
             if clase.res.error:
                 inst.children[1] = False
@@ -49,19 +52,31 @@ def ejecutarStack(stack, father):
                 inst.children[1] = True
                 inst.children[2] = clase.res.value
 
-                ambito = "Global"
-                if inst.father != None: ambito = "Local " + inst.type
                 rep.setSimbolo(inst.children[0], inst.type, ambito, inst.fila, inst.children[5])
-        elif inst.type == "if": #---------------------------------------------------------------------
-            print("if con texto->" + inst.children[0])
+        #-----------------------------------------------------------------------------------------
+        elif inst.type == "if":
             exp_parser.parse(inst.children[0], tracking=True)
             if clase.res.error:
                 rep.setError(clase.res.value, inst.fila, inst.children[1] + clase.res.pos)
             else:
                 if clase.res.value == True:
-                    respond += ejecutarStack(inst.children[2], inst)
+                    respond += ejecutarStack(inst.children[2], stack, ambito + " - Local If")
                 else:
-                    respond += ejecutarStack(inst.children[3], inst)
+                    respond += ejecutarStack(inst.children[3], stack, ambito + " - Local If")
+        #-----------------------------------------------------------------------------------------
+        elif inst.type == "for":
+            rango_res = []
+            if inst.children[0].children[4][0] == 0:
+                rango_res = getRango(inst.children[0].children[4])
+
+            if not rango_res[0]:
+                inst.children[1].extend([inst.children[0]])
+                rep.setSimbolo(inst.children[0].children[0], "var", ambito + " - Local For", inst.children[0].fila, inst.children[0].children[5])
+                for var in rango_res[1]:
+                    current_stack = stack
+                    inst.children[0].children[2] = var
+                    respond += ejecutarStack(inst.children[1], stack, ambito + " - Local For")
+        #-----------------------------------------------------------------------------------------
     return respond
 
 def getId(stack, id):
@@ -69,7 +84,29 @@ def getId(stack, id):
         if var.type == 'var':
             if id == var.children[0] and var.children[1]:
                 return [False, var.children[2]]
-
-    if stack.father != None:
-        return getId(stack.father, id)
+        elif var.type == 'var_ext':
+            if id == var.children[0] and var.children[1]:
+                return [False, var.children[2]]
+    if stack[0].father != None:
+        return getId(stack[0].father, id)
     return [True, "Error, Id no encontrado"]
+
+def getRango(rango):
+    start = 0
+    end = 0
+    exp_parser.parse(rango[1], tracking=True)
+    if clase.res.error:
+        rep.setError(clase.res.value, inst.fila, clase.res.pos)
+        return [True, 0]
+    else:
+        start = clase.res.value
+        exp_parser.parse(rango[2], tracking=True)
+        if clase.res.error:
+            rep.setError(clase.res.value, inst.fila, clase.res.pos)
+            return [True, 0]
+        else:
+            end = clase.res.value
+            rango = []
+            for i in range(start, end + 1):
+                rango.append(i)
+            return [False, rango]

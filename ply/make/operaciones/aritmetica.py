@@ -5,6 +5,12 @@ def getResult(t1, t2, op):
     elif op == '/': return Divicion(t1, t2)
     elif op == '*': return Multiplicacion(t1, t2)
 
+def Negativo(t1):
+    t1_val = t1[0]
+    if isinstance(t1_val, str):
+        return [True, "Error, " + str(t1_val) + " debe ser numérico\n", t1[1]]
+    return [False, t1_val]
+
 def Suma(t1, t2):
     t1_val = t1[0]
     t2_val = t2[0]

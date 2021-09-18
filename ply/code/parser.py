@@ -3,7 +3,7 @@ precedence = (
     ('left','MENOR','MAYOR','MENOR_IGUAL','MAYOR_IGUAL','IGUAL','NOIGUAL'),
     ('left','SIMBOLO_SUMA','SIMBOLO_RESTA'),
     ('left','SIMBOLO_MULTIPLICACION','SIMBOLO_DIVICION'),
-    #('right','NEGATIVO'),
+    ('right','NEGATIVO'),
     )
 #---------------------------------------------------------------------
 #---------------------------------------------------------------------
@@ -16,6 +16,7 @@ from ply.code.expresiones.asignacion import *
 from ply.code.expresiones.expresion import *
 from ply.code.expresiones.print import *
 from ply.code.expresiones.ifelse import *
+from ply.code.expresiones.forin import *
 #---------------------------------------------------------------------
 #---------------------------------------------------------------------
 def p_error(t):

@@ -31,6 +31,13 @@ def p_expresion_binario(t):
     t[0].setPos([t[1].start, t[3].end])
 
 #---------------------------------------------------------------------
+def p_expresion_negativo(t):
+    'expresion  : SIMBOLO_RESTA expresion %prec NEGATIVO'
+
+    dato_1 = clase.Nodo(graph.setHoja('-'))
+    t[0] = clase.Nodo(graph.setNodo('expresion', [dato_1.id, t[2].id]))
+
+#---------------------------------------------------------------------
 def p_expresion_numerico(t):
     '''expresion    : dato_numerico
                     | dato_id'''
