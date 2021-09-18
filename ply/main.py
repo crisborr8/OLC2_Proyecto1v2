@@ -8,8 +8,8 @@ parser = yacc.yacc()
 
 import ply.report.reportes as rep
 def init(texto):
-    rep.initVariables()
-    rep.txt = texto
+    texto += " ;"
+    rep.initVariables(texto)
     parser.parse(texto, tracking=True)
 
     rep.setReporte_Error()

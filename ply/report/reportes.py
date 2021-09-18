@@ -7,13 +7,13 @@ resultado = ""
 errores = ""
 simbolos = ""
 c_errores = 0
-txt = ""
 
-def initVariables():
+def initVariables(texto):
     global resultado, errores, c_errores, simbolos, line_error
     line_error = False
     c_errores = 0
     resultado = ""
+    clase.texto = texto
 
     errores = "<html><head><style>table {  font-family: arial, sans-serif;  border-collapse: collapse;"
     errores += "width: 100%;}td, th {  border: 1px solid #dddddd;  text-align: left;  padding: 8px;}"
@@ -25,14 +25,13 @@ def initVariables():
     simbolos += "tr:nth-child(even) {  background-color: #dddddd;}</style></head><body><table>\n"
     simbolos += "<tr><th>Nombre</th><th>Tipo</th><th>Ambito</th><th>Fila</th><th>Columna</th></tr>\n"
 
-    clase.initVars()
     graph.initGraph()
 
 def getTime():
     return  datetime.now().strftime("%d/%m/%Y %H:%M:%S")
 
 def getCol(col):
-    n_col = txt.rfind('\n', 0, col) + 1
+    n_col = clase.texto.rfind('\n', 0, col) + 1
     return col - n_col + 1 
 
 def setError(des, lin, col):
@@ -41,7 +40,7 @@ def setError(des, lin, col):
     errores += "<tr><th>"+str(c_errores)+"</th>"
     errores += "<th>"+des+"</th>"
     errores += "<th>"+str(lin)+"</th>"
-    errores += "<th>"+str(getCol(col))+"</th>"
+    errores += "<th>"+str(col + 1)+"</th>"
     errores += "<th>"+getTime()+"</th></tr>\n"
 
 def setSimbolo(nombre, tipo, ambito, lin, col):

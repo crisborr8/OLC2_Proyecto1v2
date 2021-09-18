@@ -1,25 +1,24 @@
 import ply.clases.clases as clase 
 import ply.report.graficar as graph
-import ply.funcion.init.ejecutar as ejec
+import ply.make.ejecutar as ejecutar
 
 start = 'init'
 
 def p_init_vacio(t):
-    'init   : '
+    'init   : PUNTO_COMA'
 
-    empty = clase.Nodo(graph.setHoja('empty'), None)
-    t[0] = clase.Nodo(graph.setNodo('init', [empty.id]), None)
+    empty = clase.Nodo(graph.setHoja('empty'))
+    t[0] = clase.Nodo(graph.setNodo('init', [empty.id]))
     graph.saveGraph()
 
 #---------------------------------------------------------------------
 def p_init(t):
-    'init   : instrucciones'
-
-    t[0] = clase.Nodo(graph.setNodo('init', [t[1].id]), None)
+    'init   : instrucciones PUNTO_COMA'
+    
+    t[0] = clase.Nodo(graph.setNodo('init', [t[1].id]))
     graph.saveGraph()
 
-    if len(t[1].stack) > 0:
-        ejec.ejecutarStack(t[1].stack)
+    ejecutar.init(t[1].stack)
 
 #---------------------------------------------------------------------
 def p_instrucciones_l1(t):
