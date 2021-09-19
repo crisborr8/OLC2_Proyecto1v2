@@ -122,7 +122,7 @@ def p_expresion_dato_numerico(t):
 #---------------------------------------------------------------------
 def p_expresion_dato_string(t):
     '''dato_numerico    : DATO_TIPO_STRING
-                        | DATO_TIPO_CHAR'''
+                        | DATO_TIPO_CHAR''' 
     
     t[0] = clase.Result(t[1][1:-1])
 
