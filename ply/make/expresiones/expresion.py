@@ -111,7 +111,7 @@ def p_expresion_dato_booleano(t):
         t[0] = clase.Result(True)
     else:
         t[0] = clase.Result(False)
-
+ 
 #---------------------------------------------------------------------
 def p_expresion_dato_numerico(t):
     '''dato_numerico    : DATO_TIPO_FLOAT64
