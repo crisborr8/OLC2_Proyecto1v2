@@ -84,8 +84,10 @@ def p_expresion_nativa(t):
 #---------------------------------------------------------------------
 def p_expresion_numerico(t):
     '''expresion    : dato_numerico
-                    | expresion_id
-                    | dato_booleano'''
+                    | dato_booleano
+                    | funcion_exp
+                    | funcion_exp_param
+                    | expresion_id'''
 
     t[0] = t[1]
 #---------------------------------------------------------------------

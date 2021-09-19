@@ -33,7 +33,6 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
     return_res = [[False, None], False]  #[return, respond] break
     i = 0
 
-
     for inst in stack:
         current_stack = stack
         #-----------------------------------------------------------------------------------------
@@ -50,11 +49,12 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
         elif inst.type == 'print':
             exp_parser.parse(inst.children[1], tracking=True)
             if clase.res.error:
-                rep.setError(clase.res.value, inst.fila, inst.children[2] + clase.res.pos)
+                rep.setError(clase.res.value, inst.fila, inst.children[2])
             else:
                 respond += str(clase.res.value) + inst.children[0]
         #-----------------------------------------------------------------------------------------
         elif inst.type == 'var':
+            print("valor a parsear " + str(inst.children[4]))
             exp_parser.parse(inst.children[4], tracking=True)
             if clase.res.error:
                 inst.children[1] = False
@@ -80,13 +80,14 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
         elif inst.type == "if":
             exp_parser.parse(inst.children[0], tracking=True)
             if clase.res.error:
-                rep.setError(clase.res.value, inst.fila, inst.children[1] + clase.res.pos)
+                rep.setError(clase.res.value, inst.fila, inst.children[1])
             else:
                 print("en el if con -> " + str(clase.res.value))
                 if clase.res.value == True:
                     return_res = ejecutarStack(inst.children[2], stack, ambito + " - Local If")
                 else:
                     return_res = ejecutarStack(inst.children[3], stack, ambito + " - Local If")
+                print(str(return_res))
         #-----------------------------------------------------------------------------------------
         elif inst.type == "for":
             rango_res = []
@@ -100,18 +101,32 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                     current_stack = stack
                     inst.children[0].children[2] = var
                     return_res = ejecutarStack(inst.children[1], stack, ambito + " - Local For")
+                    if return_res[1] or return_res[0][0]:
+                        return_res[1] = False
+                        break
         #-----------------------------------------------------------------------------------------
         elif inst.type == "while":
             while True:
                 exp_parser.parse(inst.children[0], tracking=True)
                 if clase.res.error:
-                    rep.setError(clase.res.value, inst.fila, inst.children[1] + clase.res.pos)
+                    rep.setError(clase.res.value, inst.fila, inst.children[1])
                     break
                 else:
                     if clase.res.value == True:
                         return_res = ejecutarStack(inst.children[2], stack, ambito + " - Local While")
+                        if return_res[1] or return_res[0][0]:
+                            return_res[1] = False
+                            break
                     else:
                         break
+        #-----------------------------------------------------------------------------------------
+        elif inst.type == "ret":
+            exp_parser.parse(inst.children[0], tracking=True)
+            if clase.res.error:
+                rep.setError(clase.res.value, inst.fila, clase.res.pos)
+            else:
+                return_res[0] = [True, clase.res.value]
+            
         #-----------------------------------------------------------------------------------------
         elif inst.type == "funcion":
             param_res = []
@@ -128,7 +143,7 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                     
         #-----------------------------------------------------------------------------------------
         i += 1
-        if return_res[1]:
+        if return_res[1] or return_res[0][0]:
             return return_res
         #-----------------------------------------------------------------------------------------
     return return_res
@@ -150,12 +165,17 @@ def getFuncion(stack, id):
                 if var_.children[1]:
                     return [True, "Error, La funcion '" + id + "' necesita parametros"]
                 else:
-                    return ejecutarStack(var.children[1], stack, "Global - Local Funcion " + id + "()")[0]
+                    res =  ejecutarStack(var.children[1], stack, "Global - Local Funcion " + id + "()")[0]                     
+                    res[0] = clase.res.error
+                    if res[0]:
+                        res[1] = clase.res.value
+                    return res
     if stack[0].father != None:
         return getFuncion(stack[0].father, id)
     return [True, "Error, Id '" + id + "' no encontrado"]
 
 def getFuncionParam(stack, id, params):
+    print("parametros: " + str(params))
     for var in stack:
         if var.type == 'funcion':
             var_ = var.children[0]
@@ -175,8 +195,11 @@ def getFuncionParam(stack, id, params):
                         print("****** actual params: " + str(params))
                         print("-----> Iniciando ejecucion con " + str(params))
                         res = ejecutarStack(var.children[1], stack, "Global - Local Funcion " + id + "("+var_.children[2]+")")[0]                     
-                        
+                        res[0] = clase.res.error
+                        if res[0]:
+                            res[1] = clase.res.value
                         i = 0
+                        print("respuesta ---> " + str(res))
                         print("****** now params params: " + str(old_params))
                         params = []
                         for value in old_params:

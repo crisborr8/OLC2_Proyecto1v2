@@ -2,6 +2,18 @@ import ply.clases.clases as clase
 import ply.report.graficar as graph
 
 #---------------------------------------------------------------------
+def p_instruccion_return(t):
+    '''instruccion  : RETURN expresion PUNTO_COMA'''
+    
+    dato_1 = clase.Nodo(graph.setHoja("return"))
+    dato_3 = clase.Nodo(graph.setHoja(";"))
+
+    new_stack = clase.Stack('ret', [clase.texto[t[2].start: t[2].end]])
+    new_stack.setFila(t.lineno(2))
+
+    t[0] = clase.Nodo(graph.setNodo('instruccion', [dato_1.id, t[2].id, dato_3.id]), [new_stack])
+
+#---------------------------------------------------------------------
 def p_instruccion_expresion(t):
     '''instruccion  : expresion'''
     
@@ -100,9 +112,10 @@ def p_expresion_negativo(t):
 #---------------------------------------------------------------------
 def p_expresion_numerico(t):
     '''expresion    : dato_numerico
-                    | dato_id
+                    | dato_booleano
                     | funcion_exp
-                    | dato_booleano'''
+                    | funcion_exp_param
+                    | dato_id'''
 
     t[0] = clase.Nodo(graph.setNodo('expresion', [t[1].id]))
     t[0].setPos(t[1].getPos())

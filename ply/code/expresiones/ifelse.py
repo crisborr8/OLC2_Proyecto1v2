@@ -9,7 +9,7 @@ def p_instruccion_if(t):
 
 #---------------------------------------------------------------------
 def p_if(t):
-    '''if  : IF condicion instrucciones if_then'''
+    '''if  : IF condicion instrucciones if_then END PUNTO_COMA'''
     
     children = []
     children.append(clase.texto[t[2].start: t[2].end])      #0 - Texto condicion
@@ -21,30 +21,22 @@ def p_if(t):
     new_stack.setFila(t.lineno(1))
 
     dato_1 = clase.Nodo(graph.setHoja("if"))
-    t[0] = clase.Nodo(graph.setNodo('if', [dato_1.id, t[2].id, t[3].id, t[4].id]), new_stack)
-    
-#---------------------------------------------------------------------
-def p_ifthen_end(t):
-    '''if_then  : END PUNTO_COMA'''
-    
-    new_stackable = []
-    new_stackable.append(clase.Stack('empty'))
+    dato_5 = clase.Nodo(graph.setHoja("end"))
+    dato_6 = clase.Nodo(graph.setHoja(";"))
+    t[0] = clase.Nodo(graph.setNodo('if', [dato_1.id, t[2].id, t[3].id, t[4].id, dato_5.id, dato_6.id]), new_stack)
 
-    dato_1 = clase.Nodo(graph.setHoja("end"))
-    dato_2 = clase.Nodo(graph.setHoja(";"))
-    t[0] = clase.Nodo(graph.setNodo('if_then', [dato_1.id, dato_2.id]), new_stackable)
 
 #---------------------------------------------------------------------
 def p_ifthen(t):
-    '''if_then  : if_else
-                | if_elseif'''
+    '''if_then  : if_elseif
+                | if_else'''
     
     t[0] = clase.Nodo(graph.setNodo('if_then', [t[1].id]), t[1].stack)
 
 #---------------------------------------------------------------------
 def p_ifelseif(t):
     '''if_elseif  : ELSE IF condicion instrucciones if_then'''
-    
+
     children = []
     children.append(clase.texto[t[3].start: t[3].end])      #0 - Texto condicion
     children.append(t.lexpos(3))                            #1 - Fila condicion
@@ -52,21 +44,28 @@ def p_ifelseif(t):
     children.append(t[5].stack)                             #3 - Texto then
 
     new_stack = clase.Stack('if', children)
-    new_stack.setFila(t.lineno(1))
+    new_stack.setFila(t.lineno(3))
 
     dato_1 = clase.Nodo(graph.setHoja("else"))
     dato_2 = clase.Nodo(graph.setHoja("if"))
-    t[0] = clase.Nodo(graph.setNodo('if_then', [dato_1.id, dato_2.id, t[3].id, t[4].id, t[5].id]), new_stack)
+    t[0] = clase.Nodo(graph.setNodo('if_then', [dato_1.id, dato_2.id, t[3].id, t[4].id, t[5].id]), [new_stack])
 
 #---------------------------------------------------------------------
 def p_ifelse(t):
-    '''if_else  : ELSE instrucciones END PUNTO_COMA'''
+    '''if_else  : ELSE instrucciones'''
 
     dato_1 = clase.Nodo(graph.setHoja("else"))
-    dato_3 = clase.Nodo(graph.setHoja("end"))
-    dato_4 = clase.Nodo(graph.setHoja(";"))
-    t[0] = clase.Nodo(graph.setNodo('if_then', [dato_1.id, t[2].id, dato_3.id, dato_4.id]), t[2].stack)
+    t[0] = clase.Nodo(graph.setNodo('if_then', [dato_1.id, t[2].id]), t[2].stack)
 
+#---------------------------------------------------------------------
+def p_ifelse_empty(t):
+    '''if_else  : '''
+    
+    new_stackable = []
+    new_stackable.append(clase.Stack('empty'))
+
+    dato_1 = clase.Nodo(graph.setHoja("empty"))
+    t[0] = clase.Nodo(graph.setNodo('if_then', [dato_1.id]), new_stackable)
 #---------------------------------------------------------------------
 #---------------------------------------------------------------------
 #---------------------------------------------------------------------

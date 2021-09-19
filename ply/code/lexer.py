@@ -20,6 +20,7 @@ reserved = {
     'lowercase' : 'LOWER',
     'true'      : 'TRUE',
     'false'     : 'FALSE',
+    'return'    : 'RETURN',
 
     'parse'     : 'PARSE',
     'trunc'     : 'TRUNC',
