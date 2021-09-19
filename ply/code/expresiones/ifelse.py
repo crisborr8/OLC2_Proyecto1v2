@@ -27,9 +27,12 @@ def p_if(t):
 def p_ifthen_end(t):
     '''if_then  : END PUNTO_COMA'''
     
+    new_stackable = []
+    new_stackable.append(clase.Stack('empty'))
+
     dato_1 = clase.Nodo(graph.setHoja("end"))
     dato_2 = clase.Nodo(graph.setHoja(";"))
-    t[0] = clase.Nodo(graph.setNodo('if_then', [t[1].id, dato_1.id, dato_2.id]), [])
+    t[0] = clase.Nodo(graph.setNodo('if_then', [dato_1.id, dato_2.id]), new_stackable)
 
 #---------------------------------------------------------------------
 def p_ifthen(t):
