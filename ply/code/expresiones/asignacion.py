@@ -26,3 +26,66 @@ def p_asignacion(t):
     dato_4 = clase.Nodo(graph.setHoja(";"))
     t[0] = clase.Nodo(graph.setNodo('asignacion', [t[1].id, dato_2.id, t[3].id, dato_4.id]), new_stack)
     
+
+
+
+#---------------------------------------------------------------------
+def p_expresion_dato_id_arr(t):
+    '''dato_id_array    : dato_id array_exp'''
+                    
+    t[0] = clase.Nodo(graph.setNodo('ID Array', [t[1].id, t[2].id]))
+    t[0].setPos([t[1].start, t[2].end])
+
+
+#---------------------------------------------------------------------
+def p_asignacion_array(t):
+    '''asignacion   : dato_id array_exp SIMBOLO_IGUAL expresion PUNTO_COMA'''
+    
+    children = []
+    children.append(t[1].value)                             #0 - ID
+    children.append(False)                                  #1 - Existe
+    children.append(0)                                      #2 - Valor
+    children.append("referencia")                           #3 - Referencia o por valor
+    children.append(clase.texto[t[4].start: t[4].end])      #4 - Texto lexema
+    children.append(t.lexpos(1))                            #5 - Fila lexema
+    children.append(clase.texto[t[2].start: t[2].end])      #6 - Pos_array
+
+    new_stack = clase.Stack('array', children)
+    new_stack.setFila(t.lineno(1))
+
+    dato_3 = clase.Nodo(graph.setHoja("="))
+    dato_5 = clase.Nodo(graph.setHoja(";"))
+    t[0] = clase.Nodo(graph.setNodo('asignacion', [t[1].id, t[2].id, dato_3.id, t[4].id, dato_5.id]), new_stack)
+
+    
+#---------------------------------------------------------------------
+def p_expresion_arrayExp(t):
+    '''array_exp    : IZQ_LLAVE expresion DER_LLAVE'''
+                    
+    dato_1 = clase.Nodo(graph.setHoja("["))
+    dato_3 = clase.Nodo(graph.setHoja("]"))
+    t[0] = clase.Nodo(graph.setNodo('array_expresion', [dato_1.id, t[2].id, dato_3.id]))
+    
+    start, end = t.lexspan(1)
+    end = t.lexpos(3) + len(str(t[3]))
+    t[0].setPos([start, end])
+
+#---------------------------------------------------------------------
+def p_expresion_arrayExp2(t):
+    '''array_exp    : array_exp array_exp'''
+                    
+    t[0] = clase.Nodo(graph.setNodo('array_exp', [t[1].id, t[2].id]))
+    t[0].setPos([t[1].start, t[2].end])
+
+#---------------------------------------------------------------------
+def p_expresion_array(t):
+    '''array    : IZQ_LLAVE contenido DER_LLAVE'''
+                    
+    dato_1 = clase.Nodo(graph.setHoja("["))
+    dato_3 = clase.Nodo(graph.setHoja("]"))
+    t[0] = clase.Nodo(graph.setNodo('array', [dato_1.id, t[2].id, dato_3.id]))
+    
+    start, end = t.lexspan(1)
+    end = t.lexpos(3) + len(str(t[3]))
+    t[0].setPos([start, end])
+    

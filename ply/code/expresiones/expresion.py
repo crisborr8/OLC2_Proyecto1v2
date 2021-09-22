@@ -22,8 +22,9 @@ def p_instruccion_expresion(t):
 
     t[0] = clase.Nodo(graph.setNodo('instruccion', [t[1].id]), [new_stack])
 
+
 #---------------------------------------------------------------------
-def p_expresion_par(t):
+def p_expresion_arr(t):
     '''expresion    : IZQ_PARENTESIS expresion DER_PARENTESIS'''
                     
     dato_1 = clase.Nodo(graph.setHoja("("))
@@ -115,10 +116,13 @@ def p_expresion_numerico(t):
                     | dato_booleano
                     | funcion_exp
                     | funcion_exp_param
-                    | dato_id'''
+                    | dato_id_array
+                    | dato_id
+                    | array'''
 
     t[0] = clase.Nodo(graph.setNodo('expresion', [t[1].id]))
     t[0].setPos(t[1].getPos())
+
 
 #---------------------------------------------------------------------
 def p_expresion_dato_numerico(t):

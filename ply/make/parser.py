@@ -16,6 +16,7 @@ from ply.make.expresiones.init import *
 from ply.make.expresiones.funcion import *
 from ply.make.expresiones.expresion import *
 from ply.make.expresiones.condicion import *
+from ply.make.expresiones.asignacion import *
 from ply.make.expresiones.print import *
 #---------------------------------------------------------------------
 #---------------------------------------------------------------------

@@ -14,6 +14,7 @@ current_stack = None
 respond = ""
 
 #----------------------------------------------------------
+
 def init(stack):
     global respond
     respond = ""
@@ -54,7 +55,6 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                 respond += str(clase.res.value) + inst.children[0]
         #-----------------------------------------------------------------------------------------
         elif inst.type == 'var':
-            print("valor a parsear " + str(inst.children[4]))
             exp_parser.parse(inst.children[4], tracking=True)
             if clase.res.error:
                 inst.children[1] = False
@@ -76,6 +76,47 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
 
                 if new_var:
                     rep.setSimbolo(inst.children[0], inst.type, ambito, inst.fila, inst.children[5])
+        #-----------------------------------------------------------------------------------------
+        elif inst.type == 'array':
+            exp_parser.parse(inst.children[4], tracking=True)
+            if clase.res.error:
+                inst.children[1] = False
+                rep.setError(clase.res.value, inst.fila, clase.res.pos)
+            else:
+                modificado = False
+                _current_stack = stack
+                while stack != None:
+                    for var in stack:
+                        if var.type == 'var':
+                            if inst.children[0] == var.children[0] and var.children[1]:
+                                params_texts = inst.children[6].split('[')
+                                del params_texts[0]
+                                Params = []
+                                new_val = clase.res.value
+                                pos_val = 0
+                                for txt in params_texts:
+                                    exp_parser.parse(txt.strip()[:-1], tracking=True)
+                                    if clase.res.error:
+                                        modificado = True
+                                        pos_val = clase.res.pos
+                                        break
+                                    Params.append(clase.res.value)
+
+                                if modificado:
+                                    rep.setError("Error, ubicacion del array no valida", inst.fila, pos_val)
+                                else:
+                                    res = setValueArray(var.children[2], Params, new_val)
+                                    if res[0]:
+                                        rep.setError("Error, ubicacion del array no valida", inst.fila, pos_val)
+                                    else:
+                                        var.children[2] = res[1]
+
+                                modificado = True
+                        if modificado: break
+                    if modificado: break
+                    stack = stack[0].father
+                stack = _current_stack
+                
         #-----------------------------------------------------------------------------------------
         elif inst.type == "if":
             exp_parser.parse(inst.children[0], tracking=True)
@@ -150,12 +191,48 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
 
 def getId(stack, id):
     for var in stack:
-        if var.type == 'var' or var.type == 'var_ext':
+        if var.type == 'array' or var.type == 'var' or var.type == 'var_ext':
             if id == var.children[0] and var.children[1]:
                 return [False, var.children[2]]
     if stack[0].father != None:
         return getId(stack[0].father, id)
     return [True, "Error, Id '" + id + "' no encontrado"]
+
+    
+def getArray(stack, id, Params):
+    for var in stack:
+        if var.type == 'var' or var.type == 'var_ext':
+            if id == var.children[0] and var.children[1]:
+                return getValueArray(var.children[2], Params)
+    if stack[0].father != None:
+        return getId(stack[0].father, id)
+    return [True, "Error, Id '" + id + "' no encontrado"]
+
+def getValueArray(array, Params):
+    try:
+        while len(Params) > 0:
+            array = array[Params[0]]
+            del Params[0]
+        return [False, array]
+    except:
+        return [True, "Error, ubicacion de array no encontrado"]
+
+        
+def setValueArray(array, Params, value):
+    try:
+        if len(Params) > 0:
+            i = Params[0]
+            arr = array[i]
+            del Params[0]
+            res = setValueArray(arr, Params, value)
+            if res[0]:
+                return res
+            else:
+                array[i] = res[1]
+                return [False, array]
+        return [False, value]
+    except:
+        return [True, "Error, ubicacion de array no encontrado"]
 
 def getFuncion(stack, id):
     for var in stack:

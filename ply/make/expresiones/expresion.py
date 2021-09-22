@@ -87,7 +87,8 @@ def p_expresion_numerico(t):
                     | dato_booleano
                     | funcion_exp
                     | funcion_exp_param
-                    | expresion_id'''
+                    | expresion_id
+                    | array'''
 
     t[0] = t[1]
 #---------------------------------------------------------------------
@@ -126,14 +127,6 @@ def p_expresion_dato_string(t):
     
     t[0] = clase.Result(t[1][1:-1])
 
-#---------------------------------------------------------------------
-def p_expresion_dato(t):
-    '''expresion_id    : dato_id'''
-
-    res = ejecutar.getId(ejecutar.current_stack, t[1])
-    t[0] = clase.Result(res[1], res[0])
-
-    if res[0]: t[0].pos = t.lexpos(1)
 
 
 #---------------------------------------------------------------------
