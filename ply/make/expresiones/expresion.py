@@ -71,7 +71,8 @@ def p_expresion_nativa(t):
                     | LOWER IZQ_PARENTESIS expresion DER_PARENTESIS
                     | STRING_FUNC IZQ_PARENTESIS expresion DER_PARENTESIS
                     | TYPEOF IZQ_PARENTESIS expresion DER_PARENTESIS
-                    | FLOAT IZQ_PARENTESIS expresion DER_PARENTESIS'''
+                    | FLOAT IZQ_PARENTESIS expresion DER_PARENTESIS
+                    | LENGTH IZQ_PARENTESIS expresion DER_PARENTESIS'''
     
     if t[3].error:
         t[0] = t[3]

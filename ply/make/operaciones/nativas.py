@@ -62,6 +62,7 @@ def getResult(t1, op):
     elif op == 'string': return String(t1)
     elif op == 'typeof': return Typeof(t1)
     elif op == 'float': return Float(t1)
+    elif op == 'length': return Float(t1)
 
 def Log10(t1):
     t1_val = t1[0]
@@ -132,3 +133,10 @@ def Float(t1):
         return [False, float(t1_val)]
     except X:
         return [True, "Error, " + str(t1_val) + " no se puede pasar a Float64\n", t1[1]]
+
+def Float(t1):
+    t1_val = t1[0]
+    try:
+        return [False, len(t1_val)]
+    except X:
+        return [True, "Error, no se puede obtener el tamaño de " + str(t1_val) + "\n", t1[1]]

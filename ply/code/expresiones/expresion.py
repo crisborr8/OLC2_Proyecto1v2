@@ -90,7 +90,8 @@ def p_expresion_nativa(t):
                     | LOWER IZQ_PARENTESIS expresion DER_PARENTESIS
                     | STRING_FUNC IZQ_PARENTESIS expresion DER_PARENTESIS
                     | TYPEOF IZQ_PARENTESIS expresion DER_PARENTESIS
-                    | FLOAT IZQ_PARENTESIS expresion DER_PARENTESIS'''
+                    | FLOAT IZQ_PARENTESIS expresion DER_PARENTESIS
+                    | LENGTH IZQ_PARENTESIS expresion DER_PARENTESIS'''
     
     dato_1 = clase.Nodo(graph.setHoja(t[1]))
     dato_2 = clase.Nodo(graph.setHoja('('))

@@ -32,6 +32,10 @@ reserved = {
     'float'     : 'FLOAT',
     'typeof'    : 'TYPEOF',
     'string'    : 'STRING_FUNC',
+    'length'    : 'LENGTH',
+
+    'struct'    : 'STRUCT',
+    'mutable'   : 'MUTABLE',
 
     'Int64'     : 'INT64',
     'Float64'   : 'FLOAT64',
