@@ -93,7 +93,7 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                                 del params_texts[0]
                                 Params = []
                                 new_val = clase.res.value
-                                pos_val = 0
+                                pos_val = inst.children[5]
                                 for txt in params_texts:
                                     exp_parser.parse(txt.strip()[:-1], tracking=True)
                                     if clase.res.error:
@@ -116,7 +116,47 @@ def ejecutarStack(stack, father = None, ambito = "Global"):
                     if modificado: break
                     stack = stack[0].father
                 stack = _current_stack
-                
+        
+        #-----------------------------------------------------------------------------------------
+        elif inst.type == 'push':
+            exp_parser.parse(inst.children[1], tracking=True)
+            if clase.res.error:
+                inst.children[1] = False
+                rep.setError(clase.res.value, inst.fila, clase.res.pos)
+            else:
+                modificado = False
+                _current_stack = stack
+                while stack != None:
+                    for var in stack:
+                        if var.type == 'var':
+                            if inst.children[0] == var.children[0] and var.children[1]:
+                                try:
+                                    var.children[2].append(clase.res.value)
+                                except:
+                                    rep.setError("Error, no es posible realizar un push en esta variable", inst.fila, inst.children[2])
+                                modificado = True
+                        if modificado: break
+                    if modificado: break
+                    stack = stack[0].father
+                stack = _current_stack
+                   
+        #-----------------------------------------------------------------------------------------
+        elif inst.type == 'pop':
+            modificado = False
+            _current_stack = stack
+            while stack != None:
+                for var in stack:
+                    if var.type == 'var':
+                        if inst.children[0] == var.children[0] and var.children[1]:
+                            try:
+                                var.children[2] = var.children[2][:-1]
+                            except:
+                                rep.setError("Error, no es posible realizar un pop en esta variable", inst.fila, inst.children[1])
+                            modificado = True
+                    if modificado: break
+                if modificado: break
+                stack = stack[0].father
+            stack = _current_stack  
         #-----------------------------------------------------------------------------------------
         elif inst.type == "if":
             exp_parser.parse(inst.children[0], tracking=True)
@@ -205,14 +245,22 @@ def getArray(stack, id, Params):
             if id == var.children[0] and var.children[1]:
                 return getValueArray(var.children[2], Params)
     if stack[0].father != None:
-        return getId(stack[0].father, id)
+        return getArray(stack[0].father, id, Params)
     return [True, "Error, Id '" + id + "' no encontrado"]
 
 def getValueArray(array, Params):
     try:
-        while len(Params) > 0:
-            array = array[Params[0]]
-            del Params[0]
+        por_rango = Params[0]
+        Params = Params[1]
+        print("array: " + str(array))
+        print("params: " + str(Params))
+        if por_rango:
+            if Params[1] == -1: array = array[Params[0] - 1:]
+            else: array = array[Params[0] - 1:Params[1]]
+        else:
+            while len(Params) > 0:
+                array = array[Params[0] - 1]
+                del Params[0]
         return [False, array]
     except:
         return [True, "Error, ubicacion de array no encontrado"]
@@ -221,7 +269,7 @@ def getValueArray(array, Params):
 def setValueArray(array, Params, value):
     try:
         if len(Params) > 0:
-            i = Params[0]
+            i = Params[0] - 1
             arr = array[i]
             del Params[0]
             res = setValueArray(arr, Params, value)

@@ -20,6 +20,7 @@ from ply.code.expresiones.ifelse import *
 from ply.code.expresiones.forin import *
 from ply.code.expresiones.whileend import *
 from ply.code.expresiones.funcion import *
+from ply.code.expresiones.arreglos import *
 #---------------------------------------------------------------------
 #---------------------------------------------------------------------
 def p_error(t):

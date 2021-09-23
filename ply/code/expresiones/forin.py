@@ -45,4 +45,4 @@ def p_rango(t):
     children.append(clase.texto[t[3].start: t[3].end])  #2 Fin
 
     dato_2 = clase.Nodo(graph.setHoja(":"))
-    t[0] = clase.Nodo(graph.setNodo('for', [t[1].id, dato_2.id, t[3].id]), children)
+    t[0] = clase.Nodo(graph.setNodo('rango', [t[1].id, dato_2.id, t[3].id]), children)

@@ -22,6 +22,11 @@ reserved = {
     'false'     : 'FALSE',
     'return'    : 'RETURN',
 
+    'push'      : 'PUSH',
+    'pop'       : 'POP',
+    'begin'     : 'BEGIN',
+    'end'       : 'END',
+
     'parse'     : 'PARSE',
     'trunc'     : 'TRUNC',
     'float'     : 'FLOAT',
